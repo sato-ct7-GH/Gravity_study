@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>万有引力 基礎クイズ｜湘南高校 物理</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<style>
+/* ═══════════════════════════════════════
+   CSS変数・リセット
+═══════════════════════════════════════ */
+:root {
+  --bg:       #f5f7fa;
+  --surface:  #ffffff;
+  --surface2: #eef1f6;
+  --border:   #d0d8e8;
+  --accent:   #1a6fd4;
+  --accent-h: #155ab0;
+  --correct:  #0a9e6e;
+  --wrong:    #d93025;
+  --warn-bg:  #fde8e8;
+  --ok-bg:    #e6f8f2;
+  --gold:     #b36a00;
+  --gold-bg:  #fef9ee;
+  --text:     #1a2236;
+  --text2:    #4a5a7a;
+  --text3:    #8a9ab8;
+  --study-c:  #0a9e6e;
+  --study-bg: #e6f8f2;
+  --rec-c:    #7c3aed;
+  --rec-bg:   #f3eeff;
+  --radius:   12px;
+  --radius-sm:7px;
+}
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+body {
+  font-family:'Noto Sans JP',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  padding-bottom:80px;
+}
+
+/* ═══════════════════════════════════════
+   ヘッダー
+═══════════════════════════════════════ */
+header {
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+}
+.header-inner {
+  max-width:720px; margin:0 auto;
+  padding:14px 18px;
+  display:flex; align-items:center; gap:12px;
+}
+.header-title { font-size:1.05rem; font-weight:700; color:var(--text); letter-spacing:.04em; }
+.header-sub   { font-size:.72rem; color:var(--text3); margin-top:2px; letter-spacing:.06em; }
+.header-badge {
+  margin-left:auto;
+  font-size:.72rem; font-weight:700;
+  padding:4px 12px; border-radius:20px;
+  white-space:nowrap;
+}
+.badge-study  { background:var(--study-bg); color:var(--study-c); }
+.badge-rec    { background:var(--rec-bg);   color:var(--rec-c); }
+
+/* ═══════════════════════════════════════
+   ページラップ
+═══════════════════════════════════════ */
+.page-wrap { max-width:720px; margin:0 auto; padding:24px 16px 32px; }
+
+/* ═══════════════════════════════════════
+   バナー
+═══════════════════════════════════════ */
+.hub-banner {
+  background:linear-gradient(135deg,#1a4f9c 0%,#1a6fd4 100%);
+  border-radius:var(--radius);
+  padding:20px 22px 16px;
+  color:#fff;
+  margin-bottom:20px;
+}
+.hub-banner h2 { font-size:1.1rem; font-weight:700; letter-spacing:.04em; }
+.hub-banner p  { font-size:.78rem; opacity:.85; margin-top:4px; line-height:1.5; }
+
+/* ═══════════════════════════════════════
+   セクション選択ボタン
+═══════════════════════════════════════ */
+.topic-grid {
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
+  margin-bottom:8px;
+}
+.topic-btn {
+  background:var(--surface);
+  border:1.5px solid var(--border);
+  border-radius:var(--radius-sm);
+  padding:12px 4px 10px;
+  cursor:pointer;
+  text-align:center;
+  transition:all .15s;
+  font-family:inherit;
+}
+.topic-btn:hover:not([disabled]) {
+  border-color:var(--accent);
+  background:var(--surface2);
+}
+.topic-btn.active-sec {
+  border-color:var(--accent);
+  background:var(--accent);
+  color:#fff;
+}
+.topic-btn[disabled] { opacity:.38; cursor:not-allowed; }
+.topic-num  { font-size:.72rem; color:var(--text3); font-weight:700; margin-bottom:4px; }
+.topic-name { font-size:.78rem; color:var(--text);  font-weight:700; line-height:1.3; }
+.topic-sub  { font-size:.62rem; color:var(--text3); margin-top:3px; line-height:1.3; }
+.topic-btn.active-sec .topic-num,
+.topic-btn.active-sec .topic-name,
+.topic-btn.active-sec .topic-sub { color:#fff; }
+
+/* ═══════════════════════════════════════
+   カード（共通）
+═══════════════════════════════════════ */
+.card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:26px 24px 22px;
+  display:flex; flex-direction:column; gap:16px;
+}
+
+/* ═══════════════════════════════════════
+   モード選択
+═══════════════════════════════════════ */
+.mode-select-label {
+  font-size:.82rem; color:var(--text2); font-weight:500;
+  border-left:3px solid var(--accent);
+  padding-left:10px;
+}
+.mode-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.mode-card {
+  border:1.5px solid var(--border);
+  border-radius:var(--radius);
+  padding:20px 14px 16px;
+  text-align:center; cursor:pointer;
+  transition:all .15s;
+  background:var(--surface);
+}
+.mode-card:hover { transform:translateY(-2px); }
+.mode-card.study:hover { border-color:var(--study-c); }
+.mode-card.record:hover{ border-color:var(--rec-c); }
+.mode-icon { font-size:2rem; margin-bottom:8px; }
+.mode-name { font-size:.9rem; font-weight:700; color:var(--text); margin-bottom:6px; }
+.mode-desc { font-size:.74rem; color:var(--text3); line-height:1.55; }
+
+/* ═══════════════════════════════════════
+   フォーム
+═══════════════════════════════════════ */
+.form-badge {
+  display:inline-block;
+  background:var(--rec-bg); color:var(--rec-c);
+  font-size:.75rem; font-weight:700;
+  padding:4px 12px; border-radius:20px;
+}
+.inp-label { font-size:.82rem; color:var(--text2); font-weight:500; margin-bottom:-8px; }
+.inp-field {
+  width:100%; padding:11px 14px;
+  background:var(--bg);
+  border:1.5px solid var(--border);
+  border-radius:var(--radius-sm);
+  color:var(--text); font-size:.95rem;
+  font-family:inherit; outline:none;
+  transition:border-color .15s;
+}
+.inp-field:focus { border-color:var(--accent); background:#fff; }
+.inp-field::placeholder { color:var(--text3); }
+.err-text { font-size:.8rem; color:var(--wrong); display:none; }
+.err-text.show { display:block; }
+
+/* ═══════════════════════════════════════
+   ボタン類
+═══════════════════════════════════════ */
+.primary-btn {
+  width:100%; padding:13px;
+  background:var(--accent); color:#fff;
+  border:none; border-radius:var(--radius-sm);
+  font-size:.95rem; font-weight:700;
+  cursor:pointer; font-family:inherit;
+  transition:background .15s;
+}
+.primary-btn:hover { background:var(--accent-h); }
+.ghost-btn {
+  width:100%; padding:11px;
+  background:none; color:var(--text2);
+  border:1.5px solid var(--border);
+  border-radius:var(--radius-sm);
+  font-size:.88rem; cursor:pointer;
+  font-family:inherit; transition:all .15s;
+}
+.ghost-btn:hover { border-color:var(--accent); color:var(--accent); }
+
+/* ═══════════════════════════════════════
+   プログレス
+═══════════════════════════════════════ */
+.progress-meta {
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:.75rem; color:var(--text3); margin-bottom:6px;
+}
+.progress-track {
+  background:var(--surface2);
+  border-radius:4px; height:5px;
+  margin-bottom:16px; overflow:hidden;
+}
+.progress-fill {
+  height:100%;
+  background:linear-gradient(90deg,var(--accent),#5ba8ff);
+  border-radius:4px;
+  transition:width .4s ease;
+}
+
+/* ═══════════════════════════════════════
+   クイズ
+═══════════════════════════════════════ */
+.retry-badge {
+  display:inline-block;
+  background:var(--gold-bg); color:var(--gold);
+  border:1px solid #e6c87a;
+  font-size:.72rem; font-weight:700;
+  padding:3px 10px; border-radius:6px;
+  letter-spacing:.04em; margin-bottom:-4px;
+}
+.q-num { font-size:.72rem; color:var(--text3); letter-spacing:.1em; font-weight:700; }
+.q-context {
+  font-size:.82rem; color:var(--text2);
+  line-height:1.75;
+  background:var(--surface2);
+  border-left:3px solid var(--gold);
+  border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  padding:10px 14px;
+}
+.quiz-question { font-size:1.05rem; font-weight:600; line-height:1.75; color:var(--text); }
+.quiz-choices  { display:flex; flex-direction:column; gap:9px; }
+.choice-btn {
+  width:100%; padding:13px 16px;
+  text-align:left; font-size:.95rem;
+  font-family:inherit; cursor:pointer;
+  border:1.5px solid var(--border);
+  border-radius:var(--radius-sm);
+  background:var(--surface); color:var(--text);
+  transition:all .15s; line-height:1.65;
+}
+.choice-btn:hover:not([disabled]) {
+  border-color:var(--accent);
+  background:var(--surface2);
+}
+.choice-btn.correct  { background:var(--ok-bg);   border-color:var(--correct); color:var(--correct); font-weight:700; }
+.choice-btn.wrong    { background:var(--warn-bg);  border-color:var(--wrong);   color:var(--wrong); }
+.choice-btn.unchosen { opacity:.5; }
+.choice-btn[disabled]{ cursor:default; }
+.feedback-box {
+  padding:12px 16px; border-radius:var(--radius-sm);
+  font-size:.88rem; line-height:1.6;
+}
+.fb-ok { background:var(--ok-bg);   color:var(--correct); font-weight:700; }
+.fb-ng { background:var(--warn-bg); color:var(--wrong); }
+.next-btn {
+  align-self:flex-end;
+  padding:10px 22px;
+  background:var(--accent); color:#fff;
+  border:none; border-radius:var(--radius-sm);
+  font-size:.88rem; font-weight:700;
+  cursor:pointer; font-family:inherit;
+  transition:background .15s;
+}
+.next-btn:hover { background:var(--accent-h); }
+
+/* ═══════════════════════════════════════
+   結果
+═══════════════════════════════════════ */
+.result-score-row {
+  text-align:center; padding:8px 0 4px;
+}
+.result-score-big {
+  font-size:3.6rem; font-weight:800;
+  color:var(--accent); line-height:1;
+}
+.result-score-big span { font-size:1.5rem; color:var(--text3); font-weight:400; }
+.result-msg { text-align:center; font-size:1rem; color:var(--text2); }
+
+.result-table {
+  width:100%; border-collapse:collapse;
+  font-size:.82rem; border-radius:var(--radius-sm);
+  overflow:hidden; border:1px solid var(--border);
+}
+.result-table th,.result-table td {
+  padding:7px 8px;
+  border:1px solid var(--border);
+  text-align:center;
+}
+.result-table th { background:var(--surface2); color:var(--text3); font-weight:600; }
+.result-table .ok { color:var(--correct); font-weight:700; }
+.result-table .ng { color:var(--wrong);   font-weight:700; }
+
+.send-btn {
+  width:100%; padding:13px;
+  background:linear-gradient(135deg,#7c3aed,#5b21b6);
+  color:#fff; border:none;
+  border-radius:var(--radius-sm);
+  font-size:.95rem; font-weight:700;
+  cursor:pointer; font-family:inherit;
+  transition:opacity .15s;
+}
+.send-btn:hover  { opacity:.88; }
+.send-btn:disabled { opacity:.45; cursor:default; }
+.send-ok {
+  background:var(--ok-bg); border:1px solid var(--correct);
+  border-radius:var(--radius-sm); padding:13px;
+  color:var(--correct); font-size:.88rem;
+  text-align:center; font-weight:700;
+}
+.send-ng {
+  background:var(--warn-bg); border:1px solid var(--wrong);
+  border-radius:var(--radius-sm); padding:12px;
+  color:var(--wrong); font-size:.82rem; text-align:center;
+}
+.send-note { font-size:.76rem; color:var(--text3); text-align:center; }
+.comment-label { font-size:.82rem; color:var(--text2); font-weight:500; }
+.comment-area {
+  width:100%; padding:11px 14px;
+  background:var(--bg);
+  border:1.5px solid var(--border);
+  border-radius:var(--radius-sm);
+  color:var(--text); font-size:.88rem;
+  font-family:inherit; outline:none;
+  resize:vertical; min-height:72px;
+  transition:border-color .15s;
+  line-height:1.6;
+}
+.comment-area:focus { border-color:var(--accent); background:#fff; }
+.comment-area::placeholder { color:var(--text3); }
+.comment-count { font-size:.72rem; color:var(--text3); text-align:right; margin-top:-10px; }
+
+
+/* ═══════════════════════════════════════
+   準備中
+═══════════════════════════════════════ */
+.coming-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:56px 24px; text-align:center; color:var(--text3);
+}
+.coming-card .icon { font-size:2.8rem; margin-bottom:12px; }
+
+/* ═══════════════════════════════════════
+   モードバー（固定フッター）
+═══════════════════════════════════════ */
+#mode-bar {
+  position:fixed; bottom:0; left:0; right:0;
+  background:rgba(255,255,255,.97);
+  backdrop-filter:blur(8px);
+  border-top:1px solid var(--border);
+  box-shadow:0 -2px 8px rgba(0,0,0,.06);
+  display:flex; z-index:200;
+}
+.mf-btn {
+  flex:1; background:none; border:none;
+  border-top:2px solid transparent;
+  color:var(--text3); cursor:pointer;
+  font-family:inherit; font-size:.78rem;
+  font-weight:700; letter-spacing:.04em;
+  padding:11px 4px 9px; text-align:center;
+  transition:color .15s, background .15s;
+}
+.mf-btn:hover { color:var(--text2); }
+.mf-btn small { display:block; font-size:.64rem; font-weight:400; margin-top:1px; opacity:.75; }
+.mf-btn.active-study { background:var(--study-bg); border-top-color:var(--study-c); color:var(--study-c); }
+.mf-btn.active-rec   { background:var(--rec-bg);   border-top-color:var(--rec-c);   color:var(--rec-c); }
+
+/* ═══════════════════════════════════════
+   レスポンシブ
+═══════════════════════════════════════ */
+@media(max-width:480px){
+  .topic-grid  { grid-template-columns:repeat(5,1fr); gap:5px; }
+  .topic-btn   { padding:10px 2px 8px; }
+  .topic-name  { font-size:.68rem; }
+  .topic-sub   { font-size:.58rem; }
+  .quiz-question{ font-size:.95rem; }
+  .choice-btn  { font-size:.88rem; padding:11px 12px; }
+}
+
+.katex { font-size:1em; }
+</style>
+</head>
+<body>
+
+<!-- ══ ヘッダー ══ -->
+<header>
+  <div class="header-inner" id="hd-inner">
+    <div>
+      <div class="header-title">万有引力　基礎クイズ</div>
+      <div class="header-sub">力学 ／ 神奈川県立湘南高等学校　物理</div>
+    </div>
+    <div class="header-badge" id="hd-badge" style="display:none"></div>
+  </div>
+</header>
+
+<!-- ══ メインコンテンツ ══ -->
+<div class="page-wrap" id="app"></div>
+
+<!-- ══ モードバー ══ -->
+<div id="mode-bar">
+  <button class="mf-btn" id="mf-study"  onclick="switchMode('study')">
+    📖 自習モード<small id="mf-s-sub">クリックで切替</small>
+  </button>
+  <button class="mf-btn" id="mf-record" onclick="switchMode('record')">
+    📤 学習記録送信<small id="mf-r-sub">クリックで切替</small>
+  </button>
+</div>
+
+<script>
+const GAS_URL='https://script.google.com/macros/s/AKfycbwx1RqClKjzSOvhyGBdfx0QXXoSAMVG3gAnEZB4ZaRlLcE6KNp-UBfP0BResca7XQQ/exec';
+
+/* ── KaTeX ── */
+function rm(t){
+  if(typeof katex==='undefined') return t;
+  return t
+    .replace(/\$\$([^$]+)\$\$/g,(_,m)=>katex.renderToString(m,{displayMode:true,throwOnError:false}))
+    .replace(/\$([^$\n]+)\$/g,(_,m)=>katex.renderToString(m,{displayMode:false,throwOnError:false}));
+}
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* ── データ ── */
+const SECTIONS=[
+  {
+    label:"基本①",sub:"ケプラーの法則と万有引力",
+    questions:[
+      {q:"ティコ・ブラーエの膨大な観測結果をもとに、万有引力の法則につながる天体に関する三法則を発見したのはだれか。",choices:["ケプラー","ニュートン","ガリレオ","ハッブル"],answer:0},
+      {q:"ケプラーの第一法則によると、太陽系の惑星はどのような軌道をしているか。",choices:["太陽を焦点とする楕円軌道","太陽を中心とする円軌道"],answer:0},
+      {q:"ケプラーの第二法則によると、惑星の運動において一定であるのは次のどれか。",choices:["面積速度","速さ","加速度"],answer:0},
+      {q:"ケプラーの第三法則によると、公転周期$T$と半長軸$a$の間にはどのような関係があるか。",choices:["$\\dfrac{T^2}{a^3}=k$","$\\dfrac{T^2}{a^2}=k$","$\\dfrac{T^3}{a^2}=k$","$\\dfrac{T^3}{a^3}=k$"],answer:0},
+      {ctx:"【万有引力の導出①】質量$m$の惑星の楕円軌道を半径$r$の円軌道と近似する。惑星にはたらく向心力を$F$、角速度を$\\omega$とする。",q:"このとき、運動方程式は",choices:["$F=mr\\omega^2$","$F=\\dfrac{m\\omega^2}{r}$"],answer:0},
+      {ctx:"【万有引力の導出②】ケプラーの第三法則において、半長軸$a$を$r$に置きかえる。",q:"このとき$T^2$は",choices:["$kr^3$","$kr^2$","$\\dfrac{k}{r^3}$"],answer:0},
+      {q:"角速度$\\omega$を周期$T$を用いて表すと",choices:["$\\omega=\\dfrac{2\\pi}{T}$","$\\omega=2\\pi T$","$\\omega=\\dfrac{T}{2\\pi}$"],answer:0},
+      {q:"$T^2=kr^3$および$\\omega=\\dfrac{2\\pi}{T}$から、運動方程式$F=mr\\omega^2$を変形すると",choices:["$F=\\dfrac{4\\pi^2 m}{kr^2}$","$F=\\dfrac{2\\pi^2 m}{kr^2}$","$F=\\dfrac{4\\pi^2 m}{kr^3}$","$F=\\dfrac{4\\pi^2 m}{kr}$"],answer:0},
+      {ctx:"ニュートンは$F=\\dfrac{4\\pi^2 m}{kr^2}$が太陽と惑星の間にはたらく力であり、作用・反作用の法則から太陽の質量$M$も含まれるはずだと考えた。",q:"定数$G$と太陽の質量$M$を用いると",choices:["$\\dfrac{4\\pi^2}{k}=GM$","$\\dfrac{4\\pi^2}{kr^2}=GM$","$\\dfrac{4\\pi^2}{k}=\\dfrac{G}{M}$","$\\dfrac{4\\pi^2}{k}=\\dfrac{M}{G}$"],answer:0},
+      {q:"$F=\\dfrac{4\\pi^2 m}{kr^2}$において$\\dfrac{4\\pi^2}{k}=GM$とおくと、万有引力の法則は",choices:["$F=\\dfrac{GMm}{r^2}$","$F=\\dfrac{GMm}{r}$","$F=\\dfrac{Gm}{r^2}$","$F=\\dfrac{GM}{r^2}$"],answer:0}
+    ]
+  },
+  {
+    label:"基本②",sub:"位置エネルギーと宇宙速度",
+    questions:[
+      {ctx:"質量$m$の物体を距離$r$の地点から無限遠までゆっくり運ぶとき、万有引力$F=\\dfrac{GMm}{r^2}$に逆らってした仕事が万有引力による位置エネルギー$U$に等しい。無限遠を$U=0$の基準とする。",q:"万有引力による位置エネルギー$U$は",choices:["$U=-\\dfrac{GMm}{r}$","$U=-\\dfrac{GMm}{r^2}$","$U=\\dfrac{GMm}{r}$","$U=-\\dfrac{GMm}{r^3}$"],answer:0},
+      {q:"第一宇宙速度とはどれか。",choices:["地球の表面上を等速円運動する最小の速さ","地球から無限遠に到達する最小の初速度の大きさ","太陽系を抜け出すために必要な初速度の大きさ"],answer:0},
+      {ctx:"【第一宇宙速度の導出】地球の半径を$R$、質量を$M$、物体の質量を$m$、万有引力定数を$G$とする。地表での等速円運動において、向心力は万有引力に等しい。",q:"向心力$F$は",choices:["$F=\\dfrac{GMm}{R^2}$","$F=\\dfrac{GMm}{2R}$","$F=\\dfrac{GM}{R^2}$","$F=\\dfrac{GMm}{R^3}$"],answer:0},
+      {q:"向心力$\\dfrac{GMm}{R^2}$と速さ$v$の円運動の運動方程式は",choices:["$\\dfrac{GMm}{R^2}=\\dfrac{mv^2}{R}$","$\\dfrac{GMm}{R^2}=mRv^2$","$\\dfrac{GMm}{R^2}=\\dfrac{mR}{v^2}$"],answer:0},
+      {q:"運動方程式$\\dfrac{GMm}{R^2}=\\dfrac{mv^2}{R}$より、第一宇宙速度$v$は",choices:["$v=\\sqrt{\\dfrac{GM}{R}}$","$v=\\dfrac{GM}{R}$","$v=\\left(\\dfrac{GM}{R}\\right)^{3/2}$","$v=\\sqrt{\\dfrac{R}{GM}}$"],answer:0},
+      {q:"第二宇宙速度とはどれか。",choices:["地球から無限遠に到達する最小の初速度の大きさ","地球の表面上を等速円運動する最小の速さ","太陽系を抜け出すために必要な初速度の大きさ"],answer:0},
+      {ctx:"【第二宇宙速度の導出】地球の半径を$R$、質量を$M$、物体の質量を$m$、万有引力定数を$G$とする。地球表面から初速$v$で鉛直に打ち上げる。",q:"地球表面での力学的エネルギー$E$は",choices:["$E=\\dfrac{1}{2}mv^2-\\dfrac{GMm}{R}$","$E=\\dfrac{1}{2}mv^2+\\dfrac{GMm}{R}$","$E=\\dfrac{1}{2}mv^2-\\dfrac{GMm}{R^2}$","$E=\\dfrac{1}{2}mv^2+\\dfrac{GMm}{R^2}$"],answer:0},
+      {q:"無限遠に到着したとき速さが$0$になったとすると、無限遠での力学的エネルギーは",choices:["$0$","$\\infty$","$-\\dfrac{GMm}{R}$"],answer:0},
+      {q:"力学的エネルギー保存則$\\dfrac{1}{2}mv^2-\\dfrac{GMm}{R}=0$より、第二宇宙速度$v$は",choices:["$v=\\sqrt{\\dfrac{2GM}{R}}$","$v=\\dfrac{2GM}{R}$","$v=\\sqrt{\\dfrac{GM}{R}}$","$v=\\sqrt{\\dfrac{R}{2GM}}$"],answer:0}
+    ]
+  },
+  {label:"基本③",sub:"準備中",disabled:true},
+  {label:"基本④",sub:"準備中",disabled:true},
+  {label:"基本⑤",sub:"準備中",disabled:true}
+];
+
+/* ── State ── */
+const S={
+  mode:null,
+  cls:'', name:'',
+  secIdx:0,
+  screen:'menu', // menu | mode-select | input | quiz | result
+  displayQueue:[], qPos:0,
+  firstResult:[], score:0,
+  shuffled:[], answered:false, selIdx:null,
+  sending:false, submitted:false, sendError:false,
+  comment:''
+};
+
+function sec(){ return SECTIONS[S.secIdx]; }
+
+function shuffle(arr){
+  const a=arr.map((t,i)=>({text:t,orig:i}));
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+function initSection(){
+  const qs=sec().questions;
+  S.displayQueue=qs.map((_,i)=>i);
+  S.qPos=0;
+  S.firstResult=new Array(qs.length).fill(null);
+  S.score=0; S.answered=false; S.selIdx=null;
+  S.submitted=false; S.sendError=false; S.sending=false;
+  S.shuffled=shuffle(qs[0].choices);
+}
+function initQ(){
+  S.answered=false; S.selIdx=null;
+  const origIdx=S.displayQueue[S.qPos];
+  S.shuffled=shuffle(sec().questions[origIdx].choices);
+}
+
+/* ── Render ── */
+function render(){
+  const app=document.getElementById('app');
+  updateHeader();
+  updateModeBar();
+  switch(S.screen){
+    case 'menu':       app.innerHTML=renderMenu();       break;
+    case 'mode-select':app.innerHTML=renderModeSelect(); break;
+    case 'input':      app.innerHTML=renderInput();      break;
+    case 'quiz':       app.innerHTML=renderQuiz();       break;
+    case 'result':     app.innerHTML=renderResult();     break;
+  }
+  if(S.screen==='input') setTimeout(()=>document.getElementById('inp-cls')?.focus(),50);
+}
+
+function updateHeader(){
+  const badge=document.getElementById('hd-badge');
+  if(S.mode==='study'){
+    badge.style.display='block';
+    badge.className='header-badge badge-study';
+    badge.textContent='📖 自習モード';
+  } else if(S.mode==='record'&&S.name){
+    badge.style.display='block';
+    badge.className='header-badge badge-rec';
+    badge.textContent=`📤 ${S.cls}　${S.name}`;
+  } else {
+    badge.style.display='none';
+  }
+}
+
+function updateModeBar(){
+  document.getElementById('mf-study').className ='mf-btn'+(S.mode==='study' ?' active-study':'');
+  document.getElementById('mf-record').className='mf-btn'+(S.mode==='record'?' active-rec':'');
+  document.getElementById('mf-s-sub').textContent=S.mode==='study' ?sec().label:'クリックで切替';
+  document.getElementById('mf-r-sub').textContent=S.mode==='record'&&S.name?`${S.cls} ${S.name}`:'クリックで切替';
+}
+
+/* ── 画面: メニュー ── */
+function renderMenu(){
+  const grid=SECTIONS.map((s,i)=>{
+    const act=i===S.secIdx?'active-sec':'';
+    const dis=s.disabled?'disabled':'';
+    return `<button class="topic-btn ${act}" ${dis} onclick="selectSec(${i})">
+      <div class="topic-num">${i+1}</div>
+      <div class="topic-name">${esc(s.label)}</div>
+      <div class="topic-sub">${esc(s.sub)}</div>
+    </button>`;
+  }).join('');
+  return `
+    <div class="hub-banner">
+      <h2>万有引力　基礎クイズ</h2>
+      <p>セクションを選んでモードを選択してください。</p>
+    </div>
+    <div class="topic-grid">${grid}</div>`;
+}
+
+/* ── 画面: モード選択 ── */
+function renderModeSelect(){
+  const s=sec();
+  return `<div class="card">
+    <div class="mode-select-label">${esc(s.label)}　${esc(s.sub)}（${s.questions.length}問）</div>
+    <div class="mode-row">
+      <div class="mode-card study" onclick="chooseMode('study')">
+        <div class="mode-icon">📖</div>
+        <div class="mode-name">自習モード</div>
+        <div class="mode-desc">名前入力なし<br>気軽に練習</div>
+      </div>
+      <div class="mode-card record" onclick="chooseMode('record')">
+        <div class="mode-icon">📤</div>
+        <div class="mode-name">記録送信モード</div>
+        <div class="mode-desc">クラス・氏名を<br>入力して送信</div>
+      </div>
+    </div>
+    <button class="ghost-btn" onclick="goMenu()">← 一覧に戻る</button>
+  </div>`;
+}
+
+/* ── 画面: 名前入力 ── */
+function renderInput(){
+  return `<div class="card">
+    <div class="form-badge">📤 学習記録送信モード</div>
+    <label class="inp-label">クラス</label>
+    <input id="inp-cls" class="inp-field" type="text" placeholder="例：1年A組" value="${esc(S.cls)}" autocomplete="off">
+    <label class="inp-label">氏名</label>
+    <input id="inp-name" class="inp-field" type="text" placeholder="例：湘南　太郎" value="${esc(S.name)}" autocomplete="off">
+    <div class="err-text" id="inp-err">クラスと氏名を入力してください。</div>
+    <button class="primary-btn" onclick="handleInputStart()">クイズを始める　→</button>
+    <button class="ghost-btn" onclick="goModeSelect()">← モード選択に戻る</button>
+  </div>`;
+}
+
+/* ── 画面: クイズ ── */
+function renderQuiz(){
+  const s=sec();
+  const qs=s.questions;
+  const n=qs.length;
+  const origIdx=S.displayQueue[S.qPos];
+  const q=qs[origIdx];
+  const isRetry=S.firstResult[origIdx]===false;
+  const correctSoFar=S.firstResult.filter(r=>r===true).length;
+  const pct=correctSoFar/n*100;
+
+  const ctx=q.ctx?`<div class="q-context">${rm(q.ctx)}</div>`:'';
+  const retryB=isRetry?`<div class="retry-badge">🔄 再チャレンジ</div>`:'';
+
+  const choices=S.shuffled.map((c,i)=>{
+    let cl='choice-btn';
+    if(S.answered){
+      if(c.orig===q.answer)     cl+=' correct';
+      else if(i===S.selIdx)     cl+=' wrong';
+      else                      cl+=' unchosen';
+    }
+    return `<button class="${cl}" ${S.answered?'disabled':''} onclick="pick(${i})">${rm(c.text)}</button>`;
+  }).join('');
+
+  let fb='';
+  if(S.answered){
+    const ok=S.shuffled[S.selIdx].orig===q.answer;
+    fb=`<div class="feedback-box ${ok?'fb-ok':'fb-ng'}">${ok?'✓ 正解！':'✗ 不正解。正解は '+rm(q.choices[q.answer])+' です。もう一度後で出題します。'}</div>`;
+  }
+
+  return `
+    <div class="progress-meta">
+      <span>${esc(s.label)}　${esc(s.sub)}</span>
+      <span>正解 ${correctSoFar} / ${n}問</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" style="width:${pct.toFixed(1)}%"></div></div>
+    <div class="card" style="gap:14px;">
+      ${retryB}
+      <div class="q-num">問 ${origIdx+1}</div>
+      ${ctx}
+      <div class="quiz-question">${rm(q.q)}</div>
+      <div class="quiz-choices">${choices}</div>
+      ${fb}
+      ${S.answered?`<button class="next-btn" onclick="nextQ()">次の問題　→</button>`:''}
+    </div>`;
+}
+
+/* ── 画面: 結果 ── */
+function renderResult(){
+  const s=sec();
+  const n=s.questions.length;
+  const pct=Math.round(S.score/n*100);
+  const isPerfect=S.score===n;
+  const msg=isPerfect?'🌟 全問正解！素晴らしい！':pct>=80?'✨ よくできました！':pct>=60?'📚 もう少し頑張ろう！':'💪 基本を確認しましょう！';
+
+  // 正誤テーブル（5問ずつ）
+  let rows='';
+  for(let r=0;r<Math.ceil(n/5);r++){
+    const s0=r*5, e=Math.min(s0+5,n);
+    let th='',td='';
+    for(let i=s0;i<e;i++){
+      th+=`<th>問${i+1}</th>`;
+      td+=`<td class="${S.firstResult[i]?'ok':'ng'}">${S.firstResult[i]?'○':'×'}</td>`;
+    }
+    rows+=`<tr>${th}</tr><tr>${td}</tr>`;
+  }
+
+  let sendArea='';
+  if(S.mode==='record'){
+    if(!isPerfect){
+      sendArea=`<p class="send-note">※ 全問正解すると送信ボタンが表示されます</p>`;
+    } else if(S.sending){
+      sendArea=`<button class="send-btn" disabled>📤 送信中…</button>`;
+    } else if(S.submitted){
+      sendArea=`<div class="send-ok">✓ 学習記録を送信しました！<br><small style="font-weight:400">${esc(S.cls)}　${esc(S.name)}　${esc(sec().label)}　${S.score}/${n}点</small></div>`;
+    } else {
+      sendArea=`
+        ${S.sendError?`<div class="send-ng">✗ 送信に失敗しました。再度お試しください。</div>`:''}
+        <div class="comment-label">自由感想（任意・100字以内）</div>
+        <textarea class="comment-area" id="comment-area" maxlength="100"
+          placeholder="授業の感想、わからなかったこと等を自由に書いてください"
+          oninput="updateComment(this)">${esc(S.comment)}</textarea>
+        <div class="comment-count" id="comment-count">${S.comment.length} / 100</div>
+        <button class="send-btn" onclick="sendRecord()">📤 学習記録を送信する</button>`;
+    }
+  }
+
+  return `<div class="card">
+    <div class="result-score-row">
+      <div class="result-score-big">${S.score}<span> / ${n}</span></div>
+    </div>
+    <div class="result-msg">${msg}</div>
+    <table class="result-table">${rows}</table>
+    ${sendArea}
+    <button class="ghost-btn" onclick="doRetry()">もう一度挑戦</button>
+    <button class="ghost-btn" onclick="goMenu()">← セクション一覧へ</button>
+  </div>`;
+}
+
+/* ── アクション ── */
+function selectSec(i){
+  if(SECTIONS[i].disabled) return;
+  S.secIdx=i;
+  S.screen='mode-select';
+  render();
+}
+function goMenu(){ S.screen='menu'; render(); }
+function goModeSelect(){ S.screen='mode-select'; render(); }
+
+function chooseMode(m){
+  S.mode=m;
+  if(m==='study'){ initSection(); S.screen='quiz'; }
+  else            { S.screen='input'; }
+  render();
+}
+
+function handleInputStart(){
+  const cls=document.getElementById('inp-cls').value.trim();
+  const name=document.getElementById('inp-name').value.trim();
+  if(!cls||!name){ document.getElementById('inp-err').classList.add('show'); return; }
+  S.cls=cls; S.name=name;
+  initSection(); S.screen='quiz'; render();
+}
+
+function pick(i){
+  if(S.answered) return;
+  S.answered=true; S.selIdx=i;
+  const origIdx=S.displayQueue[S.qPos];
+  const q=sec().questions[origIdx];
+  const ok=S.shuffled[i].orig===q.answer;
+  if(S.firstResult[origIdx]===null){
+    S.firstResult[origIdx]=ok;
+    if(ok) S.score++;
+  }
+  if(!ok) S.displayQueue.push(origIdx);
+  render();
+}
+
+function nextQ(){
+  S.qPos++;
+  if(S.qPos>=S.displayQueue.length){ S.screen='result'; render(); }
+  else { initQ(); render(); }
+}
+
+function doRetry(){
+  initSection(); S.screen='quiz'; render();
+}
+
+function updateComment(el){
+  S.comment=el.value;
+  const cnt=document.getElementById('comment-count');
+  if(cnt) cnt.textContent=el.value.length+' / 100';
+}
+
+function sendRecord(){
+  const s=sec();
+  const n=s.questions.length;
+  S.sending=true; S.sendError=false; render();
+  const now=new Date();
+  const ts=`${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()} ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+  const params={timestamp:ts,class:S.cls,name:S.name,section:s.label,score:String(S.score),total:String(n)};
+  params['comment']=S.comment||'';
+  S.firstResult.forEach((ok,i)=>{ params['q'+(i+1)]=ok?'○':'×'; });
+
+  const iframe=document.createElement('iframe');
+  iframe.name='_gas'; iframe.style.display='none';
+  document.body.appendChild(iframe);
+  const form=document.createElement('form');
+  form.method='GET'; form.action=GAS_URL; form.target='_gas';
+  Object.entries(params).forEach(([k,v])=>{
+    const inp=document.createElement('input');
+    inp.type='hidden'; inp.name=k; inp.value=v;
+    form.appendChild(inp);
+  });
+  document.body.appendChild(form);
+  form.submit();
+  setTimeout(()=>{
+    document.body.removeChild(form);
+    document.body.removeChild(iframe);
+    S.submitted=true; S.sending=false; S.comment=''; render();
+  },3000);
+}
+
+function switchMode(m){
+  if(m===S.mode && S.screen!=='menu') return;
+  S.mode=m;
+  if(m==='study'){
+    initSection(); S.screen=sec().disabled?'menu':'mode-select';
+  } else {
+    S.name=''; S.cls='';
+    S.screen=sec().disabled?'menu':'mode-select';
+  }
+  render();
+}
+
+/* ── 起動 ── */
+(function wait(){
+  if(typeof katex!=='undefined'){ S.screen='menu'; render(); updateModeBar(); }
+  else setTimeout(wait,60);
+})();
+</script>
+</body>
+</html>
