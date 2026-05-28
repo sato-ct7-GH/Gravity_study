@@ -392,6 +392,21 @@ header {
   .choice-btn  { font-size:.88rem; padding:11px 12px; }
 }
 
+.sec-note {
+  background:#fff8e6; border:1px solid #f0c060;
+  border-radius:var(--radius-sm);
+  padding:10px 14px; font-size:.82rem;
+  color:#7a4f00; line-height:1.6; margin-bottom:4px;
+}
+
+.orbit-diagram {
+  background:#f0f4fa;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  overflow:hidden;
+  margin-bottom:4px;
+}
+.orbit-diagram svg { display:block; width:100%; height:auto; }
 .katex { font-size:1em; }
 </style>
 </head>
@@ -424,6 +439,154 @@ header {
 <script>
 const GAS_URL='https://script.google.com/macros/s/AKfycbwx1RqClKjzSOvhyGBdfx0QXXoSAMVG3gAnEZB4ZaRlLcE6KNp-UBfP0BResca7XQQ/exec';
 
+
+/* ── 軌道図SVG ── */
+const DIAGRAMS = {
+  3: `<svg viewBox="0 0 500 340" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans JP',sans-serif">
+  <rect width="500" height="340" fill="#f0f4fa" rx="10"/>
+  <!-- タイトル -->
+  <text x="250" y="26" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1a2236">衛星の軌道図　（R = 地球の半径）</text>
+
+  <!-- 楕円軌道: 地球を焦点とする。近地点2R, 遠地点4R → 半長軸3R, 半短軸2√2 R -->
+  <!-- R_px=45, Earth=(230,170), EllipseCenter=(185,170), rx=135, ry=127 -->
+  <ellipse cx="185" cy="170" rx="135" ry="127"
+    fill="rgba(230,126,34,0.06)" stroke="#e67e22" stroke-width="2" stroke-dasharray="7,4"/>
+
+  <!-- 円軌道: 半径2R=90px, 中心=地球=(230,170) -->
+  <circle cx="230" cy="170" r="90"
+    fill="rgba(26,111,212,0.06)" stroke="#1a6fd4" stroke-width="2" stroke-dasharray="7,4"/>
+
+  <!-- 地球 -->
+  <circle cx="230" cy="170" r="18" fill="#1a6fd4"/>
+  <circle cx="230" cy="170" r="18" fill="none" stroke="#0d47a1" stroke-width="1.5"/>
+  <text x="230" y="175" text-anchor="middle" font-size="11" font-weight="700" fill="white">地球</text>
+
+  <!-- 焦点マーク（地球中心） -->
+  <circle cx="230" cy="170" r="2.5" fill="#0d47a1"/>
+
+  <!-- A点（近地点）: Earth(230)+90=320, y=170 -->
+  <circle cx="320" cy="170" r="7" fill="#e67e22"/>
+  <text x="333" y="165" font-size="12" font-weight="700" fill="#e67e22">A</text>
+  <text x="333" y="178" font-size="9.5" fill="#e67e22">近地点</text>
+
+  <!-- B点（遠地点）: Earth(230)-180=50, y=170 -->
+  <circle cx="50" cy="170" r="7" fill="#e67e22"/>
+  <text x="12" y="165" font-size="12" font-weight="700" fill="#e67e22">B</text>
+  <text x="6" y="178" font-size="9.5" fill="#e67e22">遠地点</text>
+
+  <!-- 衛星（円軌道上）-->
+  <circle cx="230" cy="80" r="7" fill="#1a6fd4"/>
+  <text x="244" y="78" font-size="10" fill="#1a6fd4" font-weight="600">衛星</text>
+
+  <!-- 距離ライン: 2R (Earth→A) -->
+  <line x1="230" y1="194" x2="320" y2="194" stroke="#1a2236" stroke-width="1.2"/>
+  <line x1="230" y1="190" x2="230" y2="198" stroke="#1a2236" stroke-width="1.2"/>
+  <line x1="320" y1="190" x2="320" y2="198" stroke="#1a2236" stroke-width="1.2"/>
+  <text x="275" y="208" text-anchor="middle" font-size="11" font-weight="600" fill="#1a2236">2R</text>
+
+  <!-- 距離ライン: 4R (Earth→B) -->
+  <line x1="50" y1="212" x2="230" y2="212" stroke="#1a2236" stroke-width="1.2"/>
+  <line x1="50"  y1="208" x2="50"  y2="216" stroke="#1a2236" stroke-width="1.2"/>
+  <line x1="230" y1="208" x2="230" y2="216" stroke="#1a2236" stroke-width="1.2"/>
+  <text x="140" y="227" text-anchor="middle" font-size="11" font-weight="600" fill="#1a2236">4R</text>
+
+  <!-- 半長軸ライン -->
+  <line x1="50" y1="152" x2="320" y2="152" stroke="#e67e22" stroke-width="1" stroke-dasharray="4,3" opacity="0.7"/>
+  <line x1="50"  y1="148" x2="50"  y2="156" stroke="#e67e22" stroke-width="1"/>
+  <line x1="320" y1="148" x2="320" y2="156" stroke="#e67e22" stroke-width="1"/>
+  <text x="185" y="147" text-anchor="middle" font-size="10.5" fill="#e67e22" font-weight="600">半長軸 3R</text>
+
+  <!-- 凡例 -->
+  <rect x="340" y="258" width="150" height="66" fill="white" stroke="#d0d8e8" rx="7"/>
+  <line x1="352" y1="278" x2="378" y2="278" stroke="#1a6fd4" stroke-width="2" stroke-dasharray="7,4"/>
+  <text x="384" y="282" font-size="10.5" fill="#1a6fd4">円軌道（半径 2R）</text>
+  <line x1="352" y1="302" x2="378" y2="302" stroke="#e67e22" stroke-width="2" stroke-dasharray="7,4"/>
+  <text x="384" y="306" font-size="10.5" fill="#e67e22">楕円軌道（半長軸 3R）</text>
+</svg>`
+};
+
+/* ── 問別図 ── */
+const Q_DIAGRAMS = {
+  '2_3': `<svg viewBox="0 0 520 350" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans JP',sans-serif">
+<defs>
+  <marker id="qah-g" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#c0392b"/></marker>
+  <marker id="qah-c" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#e67e22"/></marker>
+  <marker id="qah-r" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#1a6fd4"/></marker>
+</defs>
+<rect width="520" height="350" fill="#f8fafc" rx="10"/>
+<text x="260" y="24" text-anchor="middle" font-size="12" font-weight="700" fill="#1a2236">万有引力・慣性力・重力の関係（北半球）</text>
+
+<!-- 地球 -->
+<circle cx="185" cy="192" r="80" fill="#cce5ff" stroke="#4a90d9" stroke-width="2"/>
+<text x="152" y="197" font-size="12" font-weight="700" fill="#1a5276">地球</text>
+
+<!-- 自転軸 -->
+<line x1="185" y1="90" x2="185" y2="295" stroke="#888" stroke-width="1.5" stroke-dasharray="5,4"/>
+<text x="185" y="85" text-anchor="middle" font-size="10.5" fill="#666">N（自転軸）</text>
+<text x="185" y="312" text-anchor="middle" font-size="10.5" fill="#666">S</text>
+
+<!-- 赤道ライン -->
+<line x1="100" y1="192" x2="270" y2="192" stroke="#aaa" stroke-width="1" stroke-dasharray="3,3"/>
+
+<!-- ▼ 北極 (185, 112) ▼ -->
+<circle cx="185" cy="112" r="5" fill="#1a2236"/>
+<text x="197" y="109" font-size="10.5" font-weight="700" fill="#1a2236">北極</text>
+<!-- 万有引力＝重力（下向き・赤） -->
+<line x1="185" y1="112" x2="185" y2="162" stroke="#c0392b" stroke-width="2.5" marker-end="url(#qah-g)"/>
+<!-- 重力（青）を少しずらして重ねる -->
+<line x1="188" y1="112" x2="188" y2="158" stroke="#1a6fd4" stroke-width="2" marker-end="url(#qah-r)"/>
+<text x="193" y="132" font-size="9" fill="#c0392b">万有引力</text>
+<text x="193" y="144" font-size="9" fill="#1a6fd4">重力</text>
+<text x="193" y="157" font-size="9" fill="#e67e22">慣性力＝0</text>
+
+<!-- ▼ 北緯45° (242, 135) ▼ -->
+<!-- unit toward center: (-57/80.6, 57/80.6)=(-0.707, 0.707) -->
+<!-- 万有引力: (242,135)→(242-38.9,135+38.9)=(203,174) -->
+<!-- 慣性力: (242,135)→(253,135) len=11 rightward -->
+<!-- 重力: (-38.9+11,38.9)=(-27.9,38.9) → (214,174) -->
+<circle cx="242" cy="135" r="5" fill="#1a2236"/>
+<text x="252" y="130" font-size="10.5" font-weight="700" fill="#1a2236">北緯45°</text>
+<!-- 万有引力（赤） -->
+<line x1="242" y1="135" x2="204" y2="173" stroke="#c0392b" stroke-width="2.5" marker-end="url(#qah-g)"/>
+<!-- 慣性力（橙）: 右向き -->
+<line x1="242" y1="135" x2="254" y2="135" stroke="#e67e22" stroke-width="2.5" marker-end="url(#qah-c)"/>
+<!-- 重力（青） -->
+<line x1="242" y1="135" x2="215" y2="174" stroke="#1a6fd4" stroke-width="2.5" marker-end="url(#qah-r)"/>
+<!-- ラベル -->
+<text x="200" y="158" font-size="9" fill="#c0392b">万有引力</text>
+<text x="255" y="128" font-size="9" fill="#e67e22">慣性力</text>
+<text x="218" y="185" font-size="9" fill="#1a6fd4">重力</text>
+
+<!-- ▼ 赤道 (265, 192) ▼ -->
+<!-- 万有引力: leftward 55px → (210,192) -->
+<!-- 慣性力: rightward 15px → (280,192) -->
+<!-- 重力: leftward 40px → (225,192) -->
+<circle cx="265" cy="192" r="5" fill="#1a2236"/>
+<text x="272" y="185" font-size="10.5" font-weight="700" fill="#1a2236">赤道</text>
+<!-- 万有引力（赤、上側） -->
+<line x1="265" y1="189" x2="212" y2="189" stroke="#c0392b" stroke-width="2.5" marker-end="url(#qah-g)"/>
+<!-- 慣性力（橙、下側） -->
+<line x1="265" y1="195" x2="281" y2="195" stroke="#e67e22" stroke-width="2.5" marker-end="url(#qah-c)"/>
+<!-- 重力（青、中央） -->
+<line x1="265" y1="192" x2="227" y2="192" stroke="#1a6fd4" stroke-width="2.5" marker-end="url(#qah-r)"/>
+<!-- ラベル -->
+<text x="225" y="185" font-size="9" fill="#c0392b">万有引力</text>
+<text x="282" y="199" font-size="9" fill="#e67e22">慣性力</text>
+<text x="232" y="207" font-size="9" fill="#1a6fd4">重力</text>
+
+<!-- 凡例 -->
+<rect x="350" y="130" width="155" height="82" fill="white" stroke="#d0d8e8" rx="7" stroke-width="1.5"/>
+<line x1="362" y1="152" x2="388" y2="152" stroke="#c0392b" stroke-width="2.5" marker-end="url(#qah-g)"/>
+<text x="394" y="156" font-size="10.5" fill="#c0392b">万有引力</text>
+<line x1="362" y1="175" x2="388" y2="175" stroke="#e67e22" stroke-width="2.5" marker-end="url(#qah-c)"/>
+<text x="394" y="179" font-size="10.5" fill="#e67e22">慣性力（遠心力）</text>
+<line x1="362" y1="198" x2="388" y2="198" stroke="#1a6fd4" stroke-width="2.5" marker-end="url(#qah-r)"/>
+<text x="394" y="202" font-size="10.5" fill="#1a6fd4">重力（合力）</text>
+
+<!-- 注記 -->
+<text x="260" y="337" text-anchor="middle" font-size="9" fill="#999">※ 慣性力の大きさは約50倍に誇張して表示しています。</text>
+</svg>`
+};
 /* ── KaTeX ── */
 function rm(t){
   if(typeof katex==='undefined') return t;
@@ -478,7 +641,14 @@ const SECTIONS=[
   },
   {
     label:"基本④",sub:"人工衛星と楕円軌道",
+    note:"基本④の問題は全てつながっています。",
     questions:[
+      {
+        ctx:"地球の質量を$M$、半径を$R$、万有引力定数を$G$とする。地球の周りを半径$2R$で等速円運動する質量$m$の衛星がある。衛星の速さを$v_0$とする。",
+        q:"この衛星の運動方程式を表しなさい。",
+        choices:["$\\dfrac{GMm}{4R^2}=\\dfrac{mv_0^2}{2R}$","$\\dfrac{GMm}{2R^2}=\\dfrac{mv_0^2}{2R}$","$\\dfrac{GMm}{4R^2}=mv_0^2$","$\\dfrac{GMm}{4R}=\\dfrac{mv_0^2}{2R}$"],
+        answer:0
+      },
       {
         ctx:"地球の質量を$M$、半径を$R$、万有引力定数を$G$とする。地球の周りを半径$2R$で等速円運動する質量$m$の衛星がある。",
         q:"衛星の等速円運動の速さ$v_0$を求めなさい。",
@@ -486,25 +656,43 @@ const SECTIONS=[
         answer:0
       },
       {
-        ctx:"地球の質量を$M$、半径を$R$、万有引力定数を$G$とする。地球の周りを半径$2R$で等速円運動する質量$m$の衛星がある。",
-        q:"等速円運動の周期$T$を求めなさい。",
+        ctx:"地球の周りを半径$2R$で等速円運動する衛星の速さを$v_0=\\sqrt{\\dfrac{GM}{2R}}$とする。",
+        q:"この円運動の周期$T$を求めなさい。",
         choices:["$T=4\\pi\\sqrt{\\dfrac{2R^3}{GM}}$","$T=2\\pi\\sqrt{\\dfrac{R^3}{GM}}$","$T=4\\pi\\sqrt{\\dfrac{R^3}{GM}}$","$T=2\\pi\\sqrt{\\dfrac{2R^3}{GM}}$"],
         answer:0
       },
       {
-        ctx:"A点（近地点、地球中心からの距離$2R$）で加速して速さを$v_A$にしたところ、衛星の軌道は楕円軌道となった。遠地点Bは地球中心からの距離$4R$である。",
-        q:"角運動量保存則を用いて遠地点Bでの速さ$v_B$を$v_A$を用いて表すと",
+        ctx:"A点（近地点、地球中心からの距離$2R$）で加速して速さを$v_A$にしたところ楕円軌道となった。遠地点B点は地球中心からの距離$4R$である。",
+        q:"楕円軌道の半長軸$a$を求めなさい。",
+        choices:["$a=3R$","$a=2R$","$a=4R$","$a=6R$"],
+        answer:0
+      },
+      {
+        ctx:"A点（近地点、距離$2R$、速さ$v_A$）、B点（遠地点、距離$4R$、速さ$v_B$）。",
+        q:"面積速度一定の法則より$v_B$を$v_A$で表しなさい。",
         choices:["$v_B=\\dfrac{v_A}{2}$","$v_B=2v_A$","$v_B=\\dfrac{v_A}{4}$","$v_B=\\dfrac{v_A}{\\sqrt{2}}$"],
         answer:0
       },
       {
-        ctx:"A点（近地点、距離$2R$）での速さ$v_A$、B点（遠地点、距離$4R$）での速さ$v_B=\\dfrac{v_A}{2}$とする。力学的エネルギー保存則を用いる。",
+        ctx:"A点（近地点、距離$2R$、速さ$v_A$）、B点（遠地点、距離$4R$）。",
+        q:"A点における力学的エネルギーを$v_A$を用いて表しなさい。",
+        choices:["$\\dfrac{1}{2}mv_A^2-\\dfrac{GMm}{2R}$","$\\dfrac{1}{2}mv_A^2+\\dfrac{GMm}{2R}$","$\\dfrac{1}{2}mv_A^2-\\dfrac{GMm}{4R^2}$","$mv_A^2-\\dfrac{GMm}{2R}$"],
+        answer:0
+      },
+      {
+        ctx:"A点（近地点、距離$2R$、速さ$v_A$）、B点（遠地点、距離$4R$、速さ$v_B$）。",
+        q:"B点における力学的エネルギーを$v_B$を用いて表しなさい。",
+        choices:["$\\dfrac{1}{2}mv_B^2-\\dfrac{GMm}{4R}$","$\\dfrac{1}{2}mv_B^2+\\dfrac{GMm}{4R}$","$\\dfrac{1}{2}mv_B^2-\\dfrac{GMm}{2R}$","$mv_B^2-\\dfrac{GMm}{4R}$"],
+        answer:0
+      },
+      {
+        ctx:"力学的エネルギー保存則と$v_B=\\dfrac{v_A}{2}$を用いる。",
         q:"$v_A$，$v_B$をそれぞれ求めると",
         choices:["$v_A=\\sqrt{\\dfrac{2GM}{3R}},\ v_B=\\dfrac{1}{2}\\sqrt{\\dfrac{2GM}{3R}}$","$v_A=\\sqrt{\\dfrac{GM}{2R}},\ v_B=\\dfrac{1}{2}\\sqrt{\\dfrac{GM}{2R}}$","$v_A=\\sqrt{\\dfrac{GM}{3R}},\ v_B=\\dfrac{1}{2}\\sqrt{\\dfrac{GM}{3R}}$","$v_A=\\sqrt{\\dfrac{2GM}{R}},\ v_B=\\dfrac{1}{2}\\sqrt{\\dfrac{2GM}{R}}$"],
         answer:0
       },
       {
-        ctx:"円軌道（半径$2R$、周期$T$）と楕円軌道（半長軸$a'=3R$、周期$T'$）にケプラーの第三法則$\\dfrac{T^2}{(2R)^3}=\\dfrac{T'^2}{(3R)^3}$が成り立つ。",
+        ctx:"円軌道（半径$2R$、周期$T$）と楕円軌道（半長軸$3R$、周期$T'$）にケプラーの第三法則$\\dfrac{T^2}{(2R)^3}=\\dfrac{T'^2}{(3R)^3}$が成り立つ。",
         q:"楕円軌道の周期$T'$を$T$を用いて表すと",
         choices:["$T'=\\dfrac{3\\sqrt{6}}{4}T$","$T'=\\dfrac{3\\sqrt{3}}{4}T$","$T'=\\dfrac{3\\sqrt{6}}{2}T$","$T'=\\dfrac{9}{4}T$"],
         answer:0
@@ -672,7 +860,10 @@ function renderQuiz(){
     fb=`<div class="feedback-box ${ok?'fb-ok':'fb-ng'}">${ok?'✓ 正解！':'✗ 不正解。正解は '+rm(q.choices[q.answer])+' です。もう一度後で出題します。'}</div>`;
   }
 
+  const noteHtml=s.note?`<div class="sec-note">📌 ${esc(s.note)}</div>`:'';
+  const diagramHtml=DIAGRAMS[S.secIdx]!==undefined?`<div class="orbit-diagram">${DIAGRAMS[S.secIdx]}</div>`:'';
   return `
+    ${noteHtml}
     <div class="progress-meta">
       <span>${esc(s.label)}　${esc(s.sub)}</span>
       <span>正解 ${correctSoFar} / ${n}問</span>
@@ -686,7 +877,9 @@ function renderQuiz(){
       <div class="quiz-choices">${choices}</div>
       ${fb}
       ${S.answered?`<button class="next-btn" onclick="nextQ()">次の問題　→</button>`:''}
-    </div>`;
+    </div>
+    ${Q_DIAGRAMS[S.secIdx+'_'+origIdx]?`<div class="orbit-diagram">${Q_DIAGRAMS[S.secIdx+'_'+origIdx]}</div>`:''}
+    ${diagramHtml}`;
 }
 
 /* ── 画面: 結果 ── */
@@ -803,8 +996,8 @@ function sendRecord(){
   const now=new Date();
   const ts=`${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()} ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
   const params={timestamp:ts,class:S.cls,name:S.name,section:s.label,score:String(S.score),total:String(n)};
-  params['comment']=S.comment||'';
   S.firstResult.forEach((ok,i)=>{ params['q'+(i+1)]=ok?'○':'×'; });
+  params['comment']=S.comment||'';
 
   const iframe=document.createElement('iframe');
   iframe.name='_gas'; iframe.style.display='none';
