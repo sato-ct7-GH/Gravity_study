@@ -265,6 +265,17 @@ header {
   padding:12px 16px; border-radius:var(--radius-sm);
   font-size:.88rem; line-height:1.6;
 }
+.fb-explain {
+  margin-top:8px;
+  padding:10px 14px;
+  background:#f0f4fa;
+  border-left:3px solid var(--accent);
+  border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  font-size:.83rem;
+  color:var(--text2);
+  line-height:1.75;
+  font-weight:400;
+}
 .fb-ok { background:var(--ok-bg);   color:var(--correct); font-weight:700; }
 .fb-ng { background:var(--warn-bg); color:var(--wrong); }
 .next-btn {
@@ -493,8 +504,12 @@ const DIAGRAMS = {
   <!-- 半長軸ライン -->
   <line x1="50" y1="152" x2="320" y2="152" stroke="#e67e22" stroke-width="1" stroke-dasharray="4,3" opacity="0.7"/>
   <line x1="50"  y1="148" x2="50"  y2="156" stroke="#e67e22" stroke-width="1"/>
+  <line x1="185" y1="148" x2="185" y2="156" stroke="#e67e22" stroke-width="1.5"/>
   <line x1="320" y1="148" x2="320" y2="156" stroke="#e67e22" stroke-width="1"/>
-  <text x="185" y="147" text-anchor="middle" font-size="10.5" fill="#e67e22" font-weight="600">半長軸 3R</text>
+  <text x="118" y="139" text-anchor="middle" font-size="9" fill="#e67e22">半長軸</text>
+  <text x="118" y="149" text-anchor="middle" font-size="10.5" fill="#e67e22" font-weight="600">3R</text>
+  <text x="253" y="139" text-anchor="middle" font-size="9" fill="#e67e22">半長軸</text>
+  <text x="253" y="149" text-anchor="middle" font-size="10.5" fill="#e67e22" font-weight="600">3R</text>
 
   <!-- 凡例 -->
   <rect x="340" y="258" width="150" height="66" fill="white" stroke="#d0d8e8" rx="7"/>
@@ -610,33 +625,50 @@ const SECTIONS=[
       {q:"角速度$\\omega$を周期$T$を用いて表すと",choices:["$\\omega=\\dfrac{2\\pi}{T}$","$\\omega=2\\pi T$","$\\omega=\\dfrac{T}{2\\pi}$"],answer:0},
       {q:"$T^2=kr^3$および$\\omega=\\dfrac{2\\pi}{T}$から、運動方程式$F=mr\\omega^2$を変形すると",choices:["$F=\\dfrac{4\\pi^2 m}{kr^2}$","$F=\\dfrac{2\\pi^2 m}{kr^2}$","$F=\\dfrac{4\\pi^2 m}{kr^3}$","$F=\\dfrac{4\\pi^2 m}{kr}$"],answer:0},
       {ctx:"ニュートンは$F=\\dfrac{4\\pi^2 m}{kr^2}$が太陽と惑星の間にはたらく力であり、作用・反作用の法則から太陽の質量$M$も含まれるはずだと考えた。",q:"定数$G$と太陽の質量$M$を用いると",choices:["$\\dfrac{4\\pi^2}{k}=GM$","$\\dfrac{4\\pi^2}{kr^2}=GM$","$\\dfrac{4\\pi^2}{k}=\\dfrac{G}{M}$","$\\dfrac{4\\pi^2}{k}=\\dfrac{M}{G}$"],answer:0},
-      {q:"$F=\\dfrac{4\\pi^2 m}{kr^2}$において$\\dfrac{4\\pi^2}{k}=GM$とおくと、万有引力の法則は",choices:["$F=\\dfrac{GMm}{r^2}$","$F=\\dfrac{GMm}{r}$","$F=\\dfrac{Gm}{r^2}$","$F=\\dfrac{GM}{r^2}$"],answer:0}
+      {q:"$F=\\dfrac{4\\pi^2 m}{kr^2}$において$\\dfrac{4\\pi^2}{k}=GM$とおくと、万有引力の法則は",choices:["$F=G\\dfrac{Mm}{r^2}$","$F=G\\dfrac{Mm}{r}$","$F=\\dfrac{Gm}{r^2}$","$F=\\dfrac{GM}{r^2}$"],answer:0}
     ]
   },
   {
     label:"基本②",sub:"位置エネルギーと宇宙速度",
     questions:[
-      {ctx:"質量$m$の物体を距離$r$の地点から無限遠までゆっくり運ぶとき、万有引力$F=\\dfrac{GMm}{r^2}$に逆らってした仕事が万有引力による位置エネルギー$U$に等しい。無限遠を$U=0$の基準とする。",q:"万有引力による位置エネルギー$U$は",choices:["$U=-\\dfrac{GMm}{r}$","$U=-\\dfrac{GMm}{r^2}$","$U=\\dfrac{GMm}{r}$","$U=-\\dfrac{GMm}{r^3}$"],answer:0},
-      {q:"第一宇宙速度とはどれか。",choices:["地球の表面上を等速円運動する最小の速さ","地球から無限遠に到達する最小の初速度の大きさ","太陽系を抜け出すために必要な初速度の大きさ"],answer:0},
-      {ctx:"【第一宇宙速度の導出】地球の半径を$R$、質量を$M$、物体の質量を$m$、万有引力定数を$G$とする。地表での等速円運動において、向心力は万有引力に等しい。",q:"向心力$F$は",choices:["$F=\\dfrac{GMm}{R^2}$","$F=\\dfrac{GMm}{2R}$","$F=\\dfrac{GM}{R^2}$","$F=\\dfrac{GMm}{R^3}$"],answer:0},
-      {q:"向心力$\\dfrac{GMm}{R^2}$と速さ$v$の円運動の運動方程式は",choices:["$\\dfrac{GMm}{R^2}=\\dfrac{mv^2}{R}$","$\\dfrac{GMm}{R^2}=mRv^2$","$\\dfrac{GMm}{R^2}=\\dfrac{mR}{v^2}$"],answer:0},
-      {q:"運動方程式$\\dfrac{GMm}{R^2}=\\dfrac{mv^2}{R}$より、第一宇宙速度$v$は",choices:["$v=\\sqrt{\\dfrac{GM}{R}}$","$v=\\dfrac{GM}{R}$","$v=\\left(\\dfrac{GM}{R}\\right)^{3/2}$","$v=\\sqrt{\\dfrac{R}{GM}}$"],answer:0},
-      {q:"第二宇宙速度とはどれか。",choices:["地球から無限遠に到達する最小の初速度の大きさ","地球の表面上を等速円運動する最小の速さ","太陽系を抜け出すために必要な初速度の大きさ"],answer:0},
-      {ctx:"【第二宇宙速度の導出】地球の半径を$R$、質量を$M$、物体の質量を$m$、万有引力定数を$G$とする。地球表面から初速$v$で鉛直に打ち上げる。",q:"地球表面での力学的エネルギー$E$は",choices:["$E=\\dfrac{1}{2}mv^2-\\dfrac{GMm}{R}$","$E=\\dfrac{1}{2}mv^2+\\dfrac{GMm}{R}$","$E=\\dfrac{1}{2}mv^2-\\dfrac{GMm}{R^2}$","$E=\\dfrac{1}{2}mv^2+\\dfrac{GMm}{R^2}$"],answer:0},
-      {q:"無限遠に到着したとき速さが$0$になったとすると、無限遠での力学的エネルギーは",choices:["$0$","$\\infty$","$-\\dfrac{GMm}{R}$"],answer:0},
-      {q:"力学的エネルギー保存則$\\dfrac{1}{2}mv^2-\\dfrac{GMm}{R}=0$より、第二宇宙速度$v$は",choices:["$v=\\sqrt{\\dfrac{2GM}{R}}$","$v=\\dfrac{2GM}{R}$","$v=\\sqrt{\\dfrac{GM}{R}}$","$v=\\sqrt{\\dfrac{R}{2GM}}$"],answer:0}
+      {ctx:"質量$m$の物体を距離$r$の地点から無限遠までゆっくり運ぶとき、万有引力$F=G\\dfrac{Mm}{r^2}$に逆らってした仕事は距離$r$地点と無限遠地点の万有引力による位置エネルギー$U$の差に等しい。つまり、万有引力$F=G\\dfrac{Mm}{r^2}$を$r$から無限大まで積分した値と等しい。無限遠を$U=0$の基準とすると、距離$r$地点における万有引力による位置エネルギー$U$は",q:"距離$r$地点における万有引力による位置エネルギー$U$は",
+        explain:"$F=G\\dfrac{Mm}{r^2}$を$r$から$\\infty$まで積分すると$U=-G\\dfrac{Mm}{r}$が得られる。",choices:["$U=-G\\dfrac{Mm}{r}$","$U=-G\\dfrac{Mm}{r^2}$","$U=G\\dfrac{Mm}{r}$","$U=-G\\dfrac{Mm}{r^3}$"],answer:0},
+      {q:"第一宇宙速度とはどれか。",
+        explain:"第一宇宙速度：地表すれすれで円運動する速さ。第二宇宙速度：地球を脱出できる最小速度。",choices:["地球の表面上を等速円運動する最小の速さ","地球から無限遠に到達する最小の初速度の大きさ","太陽系を抜け出すために必要な初速度の大きさ"],answer:0},
+      {ctx:"【第一宇宙速度の導出】地球の半径を$R$、質量を$M$、物体の質量を$m$、万有引力定数を$G$とする。地表での等速円運動において、向心力は万有引力に等しい。",q:"向心力$F$は",
+        explain:"地表面（半径$R$）での円運動の向心力は万有引力$G\\dfrac{Mm}{R^2}$に等しい。",choices:["$F=G\\dfrac{Mm}{R^2}$","$F=G\\dfrac{Mm}{2R}$","$F=\\dfrac{GM}{R^2}$","$F=G\\dfrac{Mm}{R^3}$"],answer:0},
+      {q:"向心力$G\\dfrac{Mm}{R^2}$と速さ$v$の円運動の運動方程式は",
+        explain:"向心加速度は$\\dfrac{v^2}{R}$なので、$m\\cdot\\dfrac{v^2}{R}=G\\dfrac{Mm}{R^2}$となる。",choices:["$G\\dfrac{Mm}{R^2}=\\dfrac{mv^2}{R}$","$G\\dfrac{Mm}{R^2}=mRv^2$","$G\\dfrac{Mm}{R^2}=\\dfrac{mR}{v^2}$"],answer:0},
+      {q:"運動方程式$G\\dfrac{Mm}{R^2}=\\dfrac{mv^2}{R}$より、第一宇宙速度$v$は",
+        explain:"$\\dfrac{v^2}{R}=\\dfrac{GM}{R^2}$より$v^2=\\dfrac{GM}{R}$、よって$v=\\sqrt{\\dfrac{GM}{R}}$。",choices:["$v=\\sqrt{\\dfrac{GM}{R}}$","$v=\\dfrac{GM}{R}$","$v=\\left(\\dfrac{GM}{R}\\right)^{3/2}$","$v=\\sqrt{\\dfrac{R}{GM}}$"],answer:0},
+      {q:"第二宇宙速度とはどれか。",
+        explain:"無限遠に「到達できる」最小初速度。到達時の速さは0となる。",choices:["地球から無限遠に到達する最小の初速度の大きさ","地球の表面上を等速円運動する最小の速さ","太陽系を抜け出すために必要な初速度の大きさ"],answer:0},
+      {ctx:"【第二宇宙速度の導出】地球の半径を$R$、質量を$M$、物体の質量を$m$、万有引力定数を$G$とする。地球表面から初速$v$で鉛直に打ち上げる。",q:"地球表面での力学的エネルギー$E$は",
+        explain:"力学的エネルギー$=$ 運動エネルギー$+$位置エネルギー$=\\dfrac{1}{2}mv^2-G\\dfrac{Mm}{R}$。",choices:["$E=\\dfrac{1}{2}mv^2-G\\dfrac{Mm}{R}$","$E=\\dfrac{1}{2}mv^2+G\\dfrac{Mm}{R}$","$E=\\dfrac{1}{2}mv^2-G\\dfrac{Mm}{R^2}$","$E=\\dfrac{1}{2}mv^2+G\\dfrac{Mm}{R^2}$"],answer:0},
+      {q:"無限遠に到着したとき速さが$0$になったとすると、無限遠での力学的エネルギーは",
+        explain:"無限遠では$U=0$（基準点）かつ$v=0$なので、力学的エネルギー$=0$。",choices:["$0$","$\\infty$","$-G\\dfrac{Mm}{R}$"],answer:0},
+      {q:"力学的エネルギー保存則$\\dfrac{1}{2}mv^2-G\\dfrac{Mm}{R}=0$より、第二宇宙速度$v$は",
+        explain:"$\\dfrac{1}{2}mv^2=G\\dfrac{Mm}{R}$より$v^2=\\dfrac{2GM}{R}$、よって$v=\\sqrt{\\dfrac{2GM}{R}}$。第一宇宙速度の$\\sqrt{2}$倍。",choices:["$v=\\sqrt{\\dfrac{2GM}{R}}$","$v=\\dfrac{2GM}{R}$","$v=\\sqrt{\\dfrac{GM}{R}}$","$v=\\sqrt{\\dfrac{R}{2GM}}$"],answer:0}
     ]
   },
   {
     label:"基本③",sub:"重力加速度と万有引力",
     questions:[
-      {q:"地球表面での重力加速度の大きさを$g$とすると、質量$m$の物体にはたらく重力の大きさは",choices:["$mg$","$m$","$mG$"],answer:0},
-      {ctx:"地球表面の地球の中心からの距離（地球の半径）を$R$、地球の質量を$M$、万有引力定数を$G$とする。",q:"質量$m$の物体にはたらく万有引力の大きさは",choices:["$\\dfrac{GMm}{R^2}$","$\\dfrac{GMm}{R}$","$\\dfrac{GMm}{2R^2}$","$\\dfrac{Gm}{R^2}$"],answer:0},
-      {ctx:"重力の大きさ$mg$は、地球と物体の間にはたらく万有引力の大きさ$\\dfrac{GMm}{R^2}$に他ならない。",q:"重力加速度$g$を$G$，$M$，$R$を用いて表すと",choices:["$\\dfrac{GM}{R^2}$","$\\dfrac{GM}{R}$","$\\dfrac{Gm}{R^2}$","$\\dfrac{R^2}{GM}$"],answer:0},
-      {q:"地球は自転をしているので、実際には重力の大きさと万有引力の大きさは一致しない。このとき考慮すべき力は何か。",choices:["慣性力（遠心力）","空気抵抗力","向心力","復元力"],answer:0},
-      {ctx:"$g=\\dfrac{GM}{R^2}$とする。",q:"地球表面から高さ$h$の地点における万有引力の大きさを$m,g,R,h$を用いて表すと",choices:["$\\dfrac{mgR^2}{(R+h)^2}$","$mg$","$\\dfrac{mgR}{(R+h)^2}$","$\\dfrac{mgR^2}{R+h}$"],answer:0},
-      {ctx:"無限遠を万有引力による位置エネルギーの基準とする。$g=\\dfrac{GM}{R^2}$とする。",q:"高さ$h$における物体がもつ万有引力による位置エネルギーを$m,g,R,h$を用いて表すと",choices:["$-\\dfrac{mgR^2}{R+h}$","$-\\dfrac{mgR}{R+h}$","$\\dfrac{mgR^2}{R+h}$","$-\\dfrac{mgR^2}{(R+h)^2}$"],answer:0},
-      {ctx:"地球表面を万有引力による位置エネルギーの基準とする。$g=\\dfrac{GM}{R^2}$とする。",q:"高さ$h$における万有引力による位置エネルギーを$m,g,R,h$を用いて表すと",choices:["$\\dfrac{mghR}{R+h}$","$mgh$","$\\dfrac{mgR}{R+h}$","$\\dfrac{mghR^2}{R+h}$"],answer:0}
+      {q:"地球表面での重力加速度の大きさを$g$とすると、質量$m$の物体にはたらく重力の大きさは",
+        explain:"重力加速度$g$のもとで質量$m$の物体にはたらく重力は$F=mg$（運動の第二法則より）。",
+        choices:["$mg$","$m$","$mG$"],answer:0},
+      {ctx:"地球表面の地球の中心からの距離（地球の半径）を$R$、地球の質量を$M$、万有引力定数を$G$とする。",q:"質量$m$の物体にはたらく万有引力の大きさは",
+        explain:"万有引力の法則：$F=G\\dfrac{Mm}{R^2}$。分母は中心間距離の2乗。",choices:["$G\\dfrac{Mm}{R^2}$","$G\\dfrac{Mm}{R}$","$G\\dfrac{Mm}{2R^2}$","$\\dfrac{Gm}{R^2}$"],answer:0},
+      {ctx:"重力の大きさ$mg$は、地球と物体の間にはたらく万有引力の大きさ$G\\dfrac{Mm}{R^2}$に他ならない。",q:"重力加速度$g$を$G$，$M$，$R$を用いて表すと",
+        explain:"$mg=G\\dfrac{Mm}{R^2}$の両辺を$m$で割ると$g=\\dfrac{GM}{R^2}$。",choices:["$\\dfrac{GM}{R^2}$","$\\dfrac{GM}{R}$","$\\dfrac{Gm}{R^2}$","$\\dfrac{R^2}{GM}$"],answer:0},
+      {q:"地球は自転をしているので、実際には重力の大きさと万有引力の大きさは一致しない。このとき考慮すべき力は何か。",
+        explain:"自転する地球上の物体は回転運動をしているため、慣性力（遠心力）が外向きにはたらく。重力＝万有引力－遠心力（の成分）。",choices:["慣性力（遠心力）","空気抵抗力","向心力","復元力"],answer:0},
+      {ctx:"$g=\\dfrac{GM}{R^2}$とする。",q:"地球表面から高さ$h$の地点における万有引力の大きさを$m,g,R,h$を用いて表すと",
+        explain:"$F=G\\dfrac{Mm}{(R+h)^2}$に$GM=gR^2$を代入すると$F=\\dfrac{mgR^2}{(R+h)^2}$。",choices:["$\\dfrac{mgR^2}{(R+h)^2}$","$mg$","$\\dfrac{mgR}{(R+h)^2}$","$\\dfrac{mgR^2}{R+h}$"],answer:0},
+      {ctx:"無限遠を万有引力による位置エネルギーの基準とする。$g=\\dfrac{GM}{R^2}$とする。",q:"高さ$h$における物体がもつ万有引力による位置エネルギーを$m,g,R,h$を用いて表すと",
+        explain:"$U=-G\\dfrac{Mm}{R+h}$に$GM=gR^2$を代入すると$U=-\\dfrac{mgR^2}{R+h}$。",choices:["$-\\dfrac{mgR^2}{R+h}$","$-\\dfrac{mgR}{R+h}$","$\\dfrac{mgR^2}{R+h}$","$-\\dfrac{mgR^2}{(R+h)^2}$"],answer:0},
+      {ctx:"地球表面を万有引力による位置エネルギーの基準とする。$g=\\dfrac{GM}{R^2}$とする。",q:"高さ$h$における万有引力による位置エネルギーを$m,g,R,h$を用いて表すと",
+        explain:"$\\Delta U=U(h)-U(0)=-\\dfrac{mgR^2}{R+h}-\\left(-\\dfrac{mgR^2}{R}\\right)=\\dfrac{mghR}{R+h}$。$h\\ll R$のとき$\\approx mgh$。",choices:["$\\dfrac{mghR}{R+h}$","$mgh$","$\\dfrac{mgR}{R+h}$","$\\dfrac{mghR^2}{R+h}$"],answer:0}
     ]
   },
   {
@@ -646,54 +678,63 @@ const SECTIONS=[
       {
         ctx:"地球の質量を$M$、半径を$R$、万有引力定数を$G$とする。地球の周りを半径$2R$で等速円運動する質量$m$の衛星がある。衛星の速さを$v_0$とする。",
         q:"この衛星の運動方程式を表しなさい。",
-        choices:["$\\dfrac{GMm}{4R^2}=\\dfrac{mv_0^2}{2R}$","$\\dfrac{GMm}{2R^2}=\\dfrac{mv_0^2}{2R}$","$\\dfrac{GMm}{4R^2}=mv_0^2$","$\\dfrac{GMm}{4R}=\\dfrac{mv_0^2}{2R}$"],
+        explain:"向心力＝万有引力より$G\\dfrac{Mm}{(2R)^2}=\\dfrac{mv_0^2}{2R}$、すなわち$G\\dfrac{Mm}{4R^2}=\\dfrac{mv_0^2}{2R}$。",
+        choices:["$G\\dfrac{Mm}{4R^2}=\\dfrac{mv_0^2}{2R}$","$G\\dfrac{Mm}{2R^2}=\\dfrac{mv_0^2}{2R}$","$G\\dfrac{Mm}{4R^2}=mv_0^2$","$G\\dfrac{Mm}{4R}=\\dfrac{mv_0^2}{2R}$"],
         answer:0
       },
       {
         ctx:"地球の質量を$M$、半径を$R$、万有引力定数を$G$とする。地球の周りを半径$2R$で等速円運動する質量$m$の衛星がある。",
         q:"衛星の等速円運動の速さ$v_0$を求めなさい。",
+        explain:"$G\\dfrac{Mm}{4R^2}=\\dfrac{mv_0^2}{2R}$より$v_0^2=\\dfrac{GM}{2R}$、よって$v_0=\\sqrt{\\dfrac{GM}{2R}}$。",
         choices:["$v_0=\\sqrt{\\dfrac{GM}{2R}}$","$v_0=\\sqrt{\\dfrac{GM}{R}}$","$v_0=\\sqrt{\\dfrac{GM}{4R}}$","$v_0=\\sqrt{\\dfrac{2GM}{R}}$"],
         answer:0
       },
       {
         ctx:"地球の周りを半径$2R$で等速円運動する衛星の速さを$v_0=\\sqrt{\\dfrac{GM}{2R}}$とする。",
         q:"この円運動の周期$T$を求めなさい。",
+        explain:"$G\\dfrac{Mm}{4R^2}=\\dfrac{mv_0^2}{2R}$より$v_0=\\sqrt{\\dfrac{GM}{2R}}$。$T=\\dfrac{2\\pi\\cdot 2R}{v_0}=4\\pi\\sqrt{\\dfrac{2R^3}{GM}}$。",
         choices:["$T=4\\pi\\sqrt{\\dfrac{2R^3}{GM}}$","$T=2\\pi\\sqrt{\\dfrac{R^3}{GM}}$","$T=4\\pi\\sqrt{\\dfrac{R^3}{GM}}$","$T=2\\pi\\sqrt{\\dfrac{2R^3}{GM}}$"],
         answer:0
       },
       {
         ctx:"A点（近地点、地球中心からの距離$2R$）で加速して速さを$v_A$にしたところ楕円軌道となった。遠地点B点は地球中心からの距離$4R$である。",
         q:"楕円軌道の半長軸$a$を求めなさい。",
+        explain:"半長軸$a=\\dfrac{\\text{近地点距離}+\\text{遠地点距離}}{2}=\\dfrac{2R+4R}{2}=3R$。",
         choices:["$a=3R$","$a=2R$","$a=4R$","$a=6R$"],
         answer:0
       },
       {
         ctx:"A点（近地点、距離$2R$、速さ$v_A$）、B点（遠地点、距離$4R$、速さ$v_B$）。",
         q:"面積速度一定の法則より$v_B$を$v_A$で表しなさい。",
+        explain:"面積速度一定より$\\dfrac{1}{2}\\cdot 2R\\cdot v_A=\\dfrac{1}{2}\\cdot 4R\\cdot v_B$、よって$2Rv_A=4Rv_B$より$v_B=\\dfrac{v_A}{2}$。",
         choices:["$v_B=\\dfrac{v_A}{2}$","$v_B=2v_A$","$v_B=\\dfrac{v_A}{4}$","$v_B=\\dfrac{v_A}{\\sqrt{2}}$"],
         answer:0
       },
       {
         ctx:"A点（近地点、距離$2R$、速さ$v_A$）、B点（遠地点、距離$4R$）。",
         q:"A点における力学的エネルギーを$v_A$を用いて表しなさい。",
-        choices:["$\\dfrac{1}{2}mv_A^2-\\dfrac{GMm}{2R}$","$\\dfrac{1}{2}mv_A^2+\\dfrac{GMm}{2R}$","$\\dfrac{1}{2}mv_A^2-\\dfrac{GMm}{4R^2}$","$mv_A^2-\\dfrac{GMm}{2R}$"],
+        explain:"A点（距離$2R$）：$E_A=\\dfrac{1}{2}mv_A^2-G\\dfrac{Mm}{2R}$（運動E＋位置E）。",
+        choices:["$\\dfrac{1}{2}mv_A^2-G\\dfrac{Mm}{2R}$","$\\dfrac{1}{2}mv_A^2+G\\dfrac{Mm}{2R}$","$\\dfrac{1}{2}mv_A^2-G\\dfrac{Mm}{4R^2}$","$mv_A^2-G\\dfrac{Mm}{2R}$"],
         answer:0
       },
       {
         ctx:"A点（近地点、距離$2R$、速さ$v_A$）、B点（遠地点、距離$4R$、速さ$v_B$）。",
         q:"B点における力学的エネルギーを$v_B$を用いて表しなさい。",
-        choices:["$\\dfrac{1}{2}mv_B^2-\\dfrac{GMm}{4R}$","$\\dfrac{1}{2}mv_B^2+\\dfrac{GMm}{4R}$","$\\dfrac{1}{2}mv_B^2-\\dfrac{GMm}{2R}$","$mv_B^2-\\dfrac{GMm}{4R}$"],
+        explain:"B点（距離$4R$）：$E_B=\\dfrac{1}{2}mv_B^2-G\\dfrac{Mm}{4R}$（運動E＋位置E）。",
+        choices:["$\\dfrac{1}{2}mv_B^2-G\\dfrac{Mm}{4R}$","$\\dfrac{1}{2}mv_B^2+G\\dfrac{Mm}{4R}$","$\\dfrac{1}{2}mv_B^2-G\\dfrac{Mm}{2R}$","$mv_B^2-G\\dfrac{Mm}{4R}$"],
         answer:0
       },
       {
         ctx:"力学的エネルギー保存則と$v_B=\\dfrac{v_A}{2}$を用いる。",
         q:"$v_A$，$v_B$をそれぞれ求めると",
+        explain:"$G\\dfrac{Mm}{4R^2}=\\dfrac{mv_0^2}{2R}$より$G\\dfrac{Mm}{R}=2mv_0^2$。$E_A=E_B$と$v_B=\\dfrac{v_A}{2}$を代入すると$\\dfrac{1}{2}mv_A^2-G\\dfrac{Mm}{2R}=\\dfrac{1}{2}m\\dfrac{v_A^2}{4}-G\\dfrac{Mm}{4R}$、整理して$v_A=\\sqrt{\\dfrac{2GM}{3R}}$、$v_B=\\dfrac{1}{2}\\sqrt{\\dfrac{2GM}{3R}}$。",
         choices:["$v_A=\\sqrt{\\dfrac{2GM}{3R}},\ v_B=\\dfrac{1}{2}\\sqrt{\\dfrac{2GM}{3R}}$","$v_A=\\sqrt{\\dfrac{GM}{2R}},\ v_B=\\dfrac{1}{2}\\sqrt{\\dfrac{GM}{2R}}$","$v_A=\\sqrt{\\dfrac{GM}{3R}},\ v_B=\\dfrac{1}{2}\\sqrt{\\dfrac{GM}{3R}}$","$v_A=\\sqrt{\\dfrac{2GM}{R}},\ v_B=\\dfrac{1}{2}\\sqrt{\\dfrac{2GM}{R}}$"],
         answer:0
       },
       {
         ctx:"円軌道（半径$2R$、周期$T$）と楕円軌道（半長軸$3R$、周期$T'$）にケプラーの第三法則$\\dfrac{T^2}{(2R)^3}=\\dfrac{T'^2}{(3R)^3}$が成り立つ。",
         q:"楕円軌道の周期$T'$を$T$を用いて表すと",
+        explain:"$G\\dfrac{Mm}{4R^2}=\\dfrac{mv_0^2}{2R}$より$T=4\\pi\\sqrt{\\dfrac{2R^3}{GM}}$。ケプラー第三法則$\\dfrac{T^2}{(2R)^3}=\\dfrac{T'^2}{(3R)^3}$より$T'^2=\\dfrac{27}{8}T^2$、$T'=\\dfrac{3\\sqrt{6}}{4}T$。",
         choices:["$T'=\\dfrac{3\\sqrt{6}}{4}T$","$T'=\\dfrac{3\\sqrt{3}}{4}T$","$T'=\\dfrac{3\\sqrt{6}}{2}T$","$T'=\\dfrac{9}{4}T$"],
         answer:0
       }
@@ -857,7 +898,8 @@ function renderQuiz(){
   let fb='';
   if(S.answered){
     const ok=S.shuffled[S.selIdx].orig===q.answer;
-    fb=`<div class="feedback-box ${ok?'fb-ok':'fb-ng'}">${ok?'✓ 正解！':'✗ 不正解。正解は '+rm(q.choices[q.answer])+' です。もう一度後で出題します。'}</div>`;
+    const expHtml=q.explain?`<div class="fb-explain">💡 ${rm(q.explain)}</div>`:'';
+    fb=`<div class="feedback-box ${ok?'fb-ok':'fb-ng'}">${ok?'✓ 正解！':'✗ 不正解。正解は '+rm(q.choices[q.answer])+' です。もう一度後で出題します。'}</div>${expHtml}`;
   }
 
   const noteHtml=s.note?`<div class="sec-note">📌 ${esc(s.note)}</div>`:'';
