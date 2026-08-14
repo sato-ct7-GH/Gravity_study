@@ -3,505 +3,435 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>万有引力　基本知識の確認と練習問題｜湘南高校 物理</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<title>万有引力 基本知識 ｜ 湘南高校物理</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderReady=true; if(pendingRender) pendingRender()"></script>
 <style>
-/* ═══════════════════════════════════════
-   CSS変数・リセット
-═══════════════════════════════════════ */
-:root {
-  --bg:       #f5f7fa;
-  --surface:  #ffffff;
-  --surface2: #eef1f6;
-  --border:   #d0d8e8;
-  --accent:   #1a6fd4;
-  --accent-h: #155ab0;
-  --correct:  #0a9e6e;
-  --wrong:    #d93025;
-  --warn-bg:  #fde8e8;
-  --ok-bg:    #e6f8f2;
-  --gold:     #b36a00;
-  --gold-bg:  #fef9ee;
-  --text:     #1a2236;
-  --text2:    #4a5a7a;
-  --text3:    #8a9ab8;
-  --study-c:  #0a9e6e;
-  --study-bg: #e6f8f2;
-  --rec-c:    #7c3aed;
-  --rec-bg:   #f3eeff;
-  --radius:   12px;
-  --radius-sm:7px;
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;
+  background:#edf2f7;color:#1a202c;min-height:100vh;
 }
-*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
-body {
-  font-family:'Noto Sans JP',sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  min-height:100vh;
-  padding-bottom:80px;
+header{
+  background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 100%);
+  color:#fff;padding:14px 18px 12px;text-align:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.25);
+}
+.hdr-school{font-size:11px;opacity:.75;margin-bottom:4px;letter-spacing:.5px;}
+.hdr-title{font-size:19px;font-weight:700;letter-spacing:.5px;}
+.hdr-sub{font-size:12px;opacity:.8;margin-top:4px;min-height:1em;}
+
+/* ===== タブ ===== */
+.tabs{background:#1e3a8a;}
+.tabs-inner{display:flex;max-width:600px;margin:0 auto;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.tab{
+  flex:1;min-width:60px;padding:10px 4px;text-align:center;
+  font-size:11.5px;font-weight:600;color:rgba(255,255,255,.5);
+  cursor:pointer;border-bottom:3px solid transparent;
+  transition:all .2s;user-select:none;white-space:nowrap;
+}
+.tab.active{color:#fbbf24;border-bottom-color:#fbbf24;}
+.tab.disabled{opacity:.3;cursor:not-allowed;}
+
+/* ===== メイン ===== */
+.main{max-width:600px;margin:0 auto;padding:14px 13px 60px;}
+
+/* ===== モード切替 ===== */
+.mode-row{
+  display:flex;background:#fff;border-radius:10px;
+  overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1);margin-bottom:14px;
+}
+.mode-btn{
+  flex:1;padding:11px 4px;border:none;background:#fff;
+  color:#6b7280;font-size:12px;font-weight:500;
+  cursor:pointer;font-family:inherit;transition:all .2s;
+}
+.mode-btn.active{background:#2563eb;color:#fff;}
+
+/* ===== 出題順 ===== */
+.order-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.order-label{font-size:12px;color:#64748b;}
+.order-btn{
+  padding:6px 14px;border:1.5px solid #cbd5e1;border-radius:16px;
+  background:#fff;color:#64748b;font-size:12px;font-weight:600;
+  cursor:pointer;font-family:inherit;transition:all .15s;
+}
+.order-btn.active{background:#2563eb;border-color:#2563eb;color:#fff;}
+
+/* ===== 進捗 ===== */
+.prog-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.prog-bar{flex:1;height:5px;background:#cbd5e1;border-radius:3px;}
+.prog-fill{height:100%;background:#2563eb;border-radius:3px;transition:width .35s ease;}
+.prog-text{font-size:12px;color:#64748b;white-space:nowrap;}
+.score-row{text-align:right;font-size:13px;color:#64748b;margin-bottom:12px;}
+
+/* ===== 再チャレンジバッジ ===== */
+.retry-badge{
+  display:inline-block;background:#fffbeb;border:1px solid #fcd34d;
+  color:#92400e;font-size:11.5px;font-weight:700;
+  padding:4px 12px;border-radius:14px;margin-bottom:8px;
 }
 
-/* ═══════════════════════════════════════
-   ヘッダー
-═══════════════════════════════════════ */
-header {
-  background:var(--surface);
-  border-bottom:1px solid var(--border);
-  position:sticky; top:0; z-index:100;
-  box-shadow:0 1px 4px rgba(0,0,0,.06);
-}
-.header-inner {
-  max-width:720px; margin:0 auto;
-  padding:14px 18px;
-  display:flex; align-items:center; gap:12px;
-}
-.header-title { font-size:1.05rem; font-weight:700; color:var(--text); letter-spacing:.04em; }
-.header-sub   { font-size:.72rem; color:var(--text3); margin-top:2px; letter-spacing:.06em; }
-.header-badge {
-  margin-left:auto;
-  font-size:.72rem; font-weight:700;
-  padding:4px 12px; border-radius:20px;
-  white-space:nowrap;
-}
-.badge-study  { background:var(--study-bg); color:var(--study-c); }
-.badge-rec    { background:var(--rec-bg);   color:var(--rec-c); }
-
-/* ═══════════════════════════════════════
-   ページラップ
-═══════════════════════════════════════ */
-.page-wrap { max-width:720px; margin:0 auto; padding:24px 16px 32px; }
-
-/* ═══════════════════════════════════════
-   バナー
-═══════════════════════════════════════ */
-.hub-banner {
-  background:linear-gradient(135deg,#1a4f9c 0%,#1a6fd4 100%);
-  border-radius:var(--radius);
-  padding:20px 22px 16px;
-  color:#fff;
-  margin-bottom:20px;
-}
-.hub-banner h2 { font-size:1.1rem; font-weight:700; letter-spacing:.04em; }
-.hub-banner p  { font-size:.78rem; opacity:.85; margin-top:4px; line-height:1.5; }
-
-/* ═══════════════════════════════════════
-   セクション選択ボタン
-═══════════════════════════════════════ */
-.topic-grid {
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:8px;
-  margin-bottom:8px;
-}
-.topic-btn {
-  background:var(--surface);
-  border:1.5px solid var(--border);
-  border-radius:var(--radius-sm);
-  padding:12px 4px 10px;
-  cursor:pointer;
-  text-align:center;
-  transition:all .15s;
-  font-family:inherit;
-}
-.topic-btn:hover:not([disabled]) {
-  border-color:var(--accent);
-  background:var(--surface2);
-}
-.topic-btn.active-sec {
-  border-color:var(--accent);
-  background:var(--accent);
-  color:#fff;
-}
-.topic-btn[disabled] { opacity:.38; cursor:not-allowed; }
-.topic-num  { font-size:.72rem; color:var(--text3); font-weight:700; margin-bottom:4px; }
-.topic-name { font-size:.78rem; color:var(--text);  font-weight:700; line-height:1.3; }
-.topic-sub  { font-size:.62rem; color:var(--text3); margin-top:3px; line-height:1.3; }
-.topic-btn.active-sec .topic-num,
-.topic-btn.active-sec .topic-name,
-.topic-btn.active-sec .topic-sub { color:#fff; }
-
-/* ═══════════════════════════════════════
-   カード（共通）
-═══════════════════════════════════════ */
-.card {
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:26px 24px 22px;
-  display:flex; flex-direction:column; gap:16px;
+/* ===== 注記 ===== */
+.sec-note{
+  background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;
+  padding:10px 14px;font-size:12.5px;color:#92400e;
+  line-height:1.6;margin-bottom:10px;
 }
 
-/* ═══════════════════════════════════════
-   モード選択
-═══════════════════════════════════════ */
-.mode-select-label {
-  font-size:.82rem; color:var(--text2); font-weight:500;
-  border-left:3px solid var(--accent);
-  padding-left:10px;
+/* ===== 問題カード ===== */
+.q-card{
+  background:#fff;border-radius:12px;padding:18px 20px;
+  margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.09);
+  border-left:4px solid #2563eb;
 }
-.mode-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-.mode-card {
-  border:1.5px solid var(--border);
-  border-radius:var(--radius);
-  padding:20px 14px 16px;
-  text-align:center; cursor:pointer;
-  transition:all .15s;
-  background:var(--surface);
+.q-num{font-size:11px;font-weight:700;color:#2563eb;margin-bottom:7px;letter-spacing:.5px;}
+.q-ctx{
+  font-size:13px;line-height:1.75;color:#475569;
+  background:#f8fafc;border-left:3px solid #fbbf24;
+  border-radius:0 6px 6px 0;padding:9px 13px;margin-bottom:10px;
 }
-.mode-card:hover { transform:translateY(-2px); }
-.mode-card.study:hover { border-color:var(--study-c); }
-.mode-card.record:hover{ border-color:var(--rec-c); }
-.mode-icon { font-size:2rem; margin-bottom:8px; }
-.mode-name { font-size:.9rem; font-weight:700; color:var(--text); margin-bottom:6px; }
-.mode-desc { font-size:.74rem; color:var(--text3); line-height:1.55; }
+.q-text{font-size:15px;line-height:1.75;}
 
-/* ═══════════════════════════════════════
-   フォーム
-═══════════════════════════════════════ */
-.form-badge {
-  display:inline-block;
-  background:var(--rec-bg); color:var(--rec-c);
-  font-size:.75rem; font-weight:700;
-  padding:4px 12px; border-radius:20px;
+/* ===== 選択肢 ===== */
+.choices{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.choice-btn{
+  width:100%;padding:11px 15px;background:#fff;
+  border:2px solid #e2e8f0;border-radius:8px;cursor:pointer;
+  font-size:14px;text-align:center;color:#374151;
+  transition:all .15s;font-family:inherit;line-height:1.6;
+  display:flex;align-items:center;justify-content:center;min-height:48px;
 }
-.inp-label { font-size:.82rem; color:var(--text2); font-weight:500; margin-bottom:-8px; }
-.inp-field {
-  width:100%; padding:11px 14px;
-  background:var(--bg);
-  border:1.5px solid var(--border);
-  border-radius:var(--radius-sm);
-  color:var(--text); font-size:.95rem;
-  font-family:inherit; outline:none;
-  transition:border-color .15s;
-}
-.inp-field:focus { border-color:var(--accent); background:#fff; }
-.inp-field::placeholder { color:var(--text3); }
-.err-text { font-size:.8rem; color:var(--wrong); display:none; }
-.err-text.show { display:block; }
+.choice-btn:hover:not(:disabled){border-color:#93c5fd;background:#eff6ff;}
+.choice-btn.correct{border-color:#34d399;background:#ecfdf5;color:#065f46;font-weight:600;}
+.choice-btn.wrong{border-color:#f87171;background:#fef2f2;color:#991b1b;}
+.choice-btn:disabled{cursor:default;}
 
-/* ═══════════════════════════════════════
-   ボタン類
-═══════════════════════════════════════ */
-.primary-btn {
-  width:100%; padding:13px;
-  background:var(--accent); color:#fff;
-  border:none; border-radius:var(--radius-sm);
-  font-size:.95rem; font-weight:700;
-  cursor:pointer; font-family:inherit;
-  transition:background .15s;
+/* ===== フィードバック ===== */
+.feedback{
+  padding:12px 16px;border-radius:8px;font-size:13px;
+  line-height:1.65;display:none;margin-bottom:12px;
 }
-.primary-btn:hover { background:var(--accent-h); }
-.ghost-btn {
-  width:100%; padding:11px;
-  background:none; color:var(--text2);
-  border:1.5px solid var(--border);
-  border-radius:var(--radius-sm);
-  font-size:.88rem; cursor:pointer;
-  font-family:inherit; transition:all .15s;
-}
-.ghost-btn:hover { border-color:var(--accent); color:var(--accent); }
+.feedback.ok{display:block;background:#ecfdf5;border:1px solid #6ee7b7;color:#065f46;}
+.feedback.ng{display:block;background:#fef2f2;border:1px solid #fca5a5;color:#991b1b;}
+.fb-expl{color:#78350f;}
 
-/* ═══════════════════════════════════════
-   プログレス
-═══════════════════════════════════════ */
-.progress-meta {
-  display:flex; justify-content:space-between; align-items:center;
-  font-size:.75rem; color:var(--text3); margin-bottom:6px;
+/* ===== 送信モード解説 ===== */
+.sm-explanation{
+  display:flex;gap:10px;align-items:flex-start;
+  background:#fffbeb;border:1px solid #fcd34d;
+  border-radius:8px;padding:12px 14px;
+  font-size:13px;line-height:1.75;color:#78350f;
+  margin-bottom:12px;
 }
-.progress-track {
-  background:var(--surface2);
-  border-radius:4px; height:5px;
-  margin-bottom:16px; overflow:hidden;
+.sm-expl-icon{font-size:18px;flex-shrink:0;margin-top:1px;}
+
+/* ===== 次へボタン ===== */
+.next-btn{
+  width:100%;padding:13px;background:#2563eb;color:#fff;
+  border:none;border-radius:8px;font-size:15px;font-weight:600;
+  cursor:pointer;font-family:inherit;transition:background .2s;
 }
-.progress-fill {
-  height:100%;
-  background:linear-gradient(90deg,var(--accent),#5ba8ff);
-  border-radius:4px;
-  transition:width .4s ease;
+.next-btn:hover{background:#1e3a8a;}
+.next-btn.green{background:#059669;}
+.next-btn.green:hover{background:#047857;}
+.next-btn.gray{background:#64748b;}
+.next-btn.gray:hover{background:#475569;}
+
+/* ===== 初学モード 解答エリア ===== */
+.intro-answer{
+  background:#ecfdf5;border:1px solid #6ee7b7;border-radius:10px;
+  padding:14px 18px;margin-bottom:14px;
+}
+.intro-answer-label{font-size:11px;font-weight:700;color:#059669;letter-spacing:.5px;margin-bottom:8px;}
+.intro-answer-text{
+  font-size:16px;font-weight:700;color:#065f46;
+  margin-bottom:12px;line-height:1.6;
+  display:flex;align-items:center;justify-content:center;
+}
+.intro-expl{
+  font-size:13.5px;line-height:1.75;color:#374151;
+  border-top:1px dashed #a7f3d0;padding-top:10px;
 }
 
-/* ═══════════════════════════════════════
-   クイズ
-═══════════════════════════════════════ */
-.retry-badge {
-  display:inline-block;
-  background:var(--gold-bg); color:var(--gold);
-  border:1px solid #e6c87a;
-  font-size:.72rem; font-weight:700;
-  padding:3px 10px; border-radius:6px;
-  letter-spacing:.04em; margin-bottom:-4px;
+/* ===== 結果 ===== */
+.result-card{
+  background:#fff;border-radius:16px;padding:40px 24px;
+  text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.1);margin-bottom:14px;
 }
-.q-num { font-size:.72rem; color:var(--text3); letter-spacing:.1em; font-weight:700; }
-.q-context {
-  font-size:.82rem; color:var(--text2);
-  line-height:1.75;
-  background:var(--surface2);
-  border-left:3px solid var(--gold);
-  border-radius:0 var(--radius-sm) var(--radius-sm) 0;
-  padding:10px 14px;
-}
-.quiz-question { font-size:1.05rem; font-weight:600; line-height:1.75; color:var(--text); }
-.quiz-choices  { display:flex; flex-direction:column; gap:9px; }
-.choice-btn {
-  width:100%; padding:13px 16px;
-  text-align:left; font-size:.95rem;
-  font-family:inherit; cursor:pointer;
-  border:1.5px solid var(--border);
-  border-radius:var(--radius-sm);
-  background:var(--surface); color:var(--text);
-  transition:all .15s; line-height:1.65;
-}
-.choice-btn:hover:not([disabled]) {
-  border-color:var(--accent);
-  background:var(--surface2);
-}
-.choice-btn.correct  { background:var(--ok-bg);   border-color:var(--correct); color:var(--correct); font-weight:700; }
-.choice-btn.wrong    { background:var(--warn-bg);  border-color:var(--wrong);   color:var(--wrong); }
-.choice-btn.unchosen { opacity:.5; }
-.choice-btn[disabled]{ cursor:default; }
-.feedback-box {
-  padding:12px 16px; border-radius:var(--radius-sm);
-  font-size:.88rem; line-height:1.6;
-}
-.fb-explain {
-  margin-top:8px;
-  padding:10px 14px;
-  background:#f0f4fa;
-  border-left:3px solid var(--accent);
-  border-radius:0 var(--radius-sm) var(--radius-sm) 0;
-  font-size:.83rem;
-  color:var(--text2);
-  line-height:1.75;
-  font-weight:400;
-}
-.fb-ok { background:var(--ok-bg);   color:var(--correct); font-weight:700; }
-.fb-ng { background:var(--warn-bg); color:var(--wrong); }
-.next-btn {
-  align-self:flex-end;
-  padding:10px 22px;
-  background:var(--accent); color:#fff;
-  border:none; border-radius:var(--radius-sm);
-  font-size:.88rem; font-weight:700;
-  cursor:pointer; font-family:inherit;
-  transition:background .15s;
-}
-.next-btn:hover { background:var(--accent-h); }
+.result-emoji{font-size:52px;margin-bottom:12px;}
+.result-score{font-size:52px;font-weight:800;color:#2563eb;line-height:1;}
+.result-total{font-size:16px;color:#64748b;margin-bottom:6px;}
+.result-pct{font-size:26px;font-weight:700;color:#374151;margin-bottom:24px;}
+.result-actions{display:flex;flex-direction:column;gap:10px;}
 
-/* ═══════════════════════════════════════
-   結果
-═══════════════════════════════════════ */
-.result-score-row {
-  text-align:center; padding:8px 0 4px;
+/* ===== 送信モード ===== */
+.name-card{
+  background:#fff;border-radius:12px;padding:16px 20px;
+  margin-bottom:13px;box-shadow:0 1px 4px rgba(0,0,0,.08);
 }
-.result-score-big {
-  font-size:3.6rem; font-weight:800;
-  color:var(--accent); line-height:1;
+.name-label{font-size:13px;font-weight:600;color:#374151;margin-bottom:8px;display:block;}
+.name-input{
+  width:100%;padding:10px 14px;border:2px solid #e2e8f0;
+  border-radius:8px;font-size:15px;font-family:inherit;
+  outline:none;color:#1a202c;transition:border-color .2s;
 }
-.result-score-big span { font-size:1.5rem; color:var(--text3); font-weight:400; }
-.result-msg { text-align:center; font-size:1rem; color:var(--text2); }
+.name-input:focus{border-color:#2563eb;}
+.sub-result{
+  padding:16px;border-radius:10px;text-align:center;
+  margin-bottom:16px;font-size:14px;line-height:1.8;
+}
+.sub-result.ok{background:#ecfdf5;border:1px solid #6ee7b7;color:#065f46;}
+.sub-result.warn{background:#fffbeb;border:1px solid #fcd34d;color:#92400e;}
+.submit-btn{
+  width:100%;padding:14px;background:#059669;color:#fff;border:none;
+  border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;
+  font-family:inherit;margin-bottom:10px;transition:background .2s;
+}
+.submit-btn:hover{background:#047857;}
+.submit-btn:disabled{background:#9ca3af;cursor:not-allowed;}
 
-.result-table {
-  width:100%; border-collapse:collapse;
-  font-size:.82rem; border-radius:var(--radius-sm);
-  overflow:hidden; border:1px solid var(--border);
+/* ===== 完了・準備中 ===== */
+.done-card,.coming-card{
+  background:#fff;border-radius:16px;padding:44px 24px;
+  text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.1);
 }
-.result-table th,.result-table td {
-  padding:7px 8px;
-  border:1px solid var(--border);
-  text-align:center;
-}
-.result-table th { background:var(--surface2); color:var(--text3); font-weight:600; }
-.result-table .ok { color:var(--correct); font-weight:700; }
-.result-table .ng { color:var(--wrong);   font-weight:700; }
+.done-icon,.coming-icon{font-size:52px;margin-bottom:14px;}
+.done-title{font-size:18px;font-weight:700;color:#1a202c;margin-bottom:6px;}
+.done-sub{font-size:13px;color:#64748b;margin-bottom:24px;}
+.done-actions{display:flex;flex-direction:column;gap:10px;}
+.coming-title{font-size:18px;font-weight:600;color:#374151;margin-bottom:8px;}
+.coming-text{font-size:14px;color:#6b7280;}
 
-.send-btn {
-  width:100%; padding:13px;
-  background:linear-gradient(135deg,#7c3aed,#5b21b6);
-  color:#fff; border:none;
-  border-radius:var(--radius-sm);
-  font-size:.95rem; font-weight:700;
-  cursor:pointer; font-family:inherit;
-  transition:opacity .15s;
+/* ===== 図 ===== */
+.diagram-box{
+  background:#fff;border-radius:12px;overflow:hidden;
+  box-shadow:0 1px 4px rgba(0,0,0,.09);margin-bottom:12px;
 }
-.send-btn:hover  { opacity:.88; }
-.send-btn:disabled { opacity:.45; cursor:default; }
-.send-ok {
-  background:var(--ok-bg); border:1px solid var(--correct);
-  border-radius:var(--radius-sm); padding:13px;
-  color:var(--correct); font-size:.88rem;
-  text-align:center; font-weight:700;
-}
-.send-ng {
-  background:var(--warn-bg); border:1px solid var(--wrong);
-  border-radius:var(--radius-sm); padding:12px;
-  color:var(--wrong); font-size:.82rem; text-align:center;
-}
-.send-note { font-size:.76rem; color:var(--text3); text-align:center; }
-.comment-label { font-size:.82rem; color:var(--text2); font-weight:500; }
-.comment-area {
-  width:100%; padding:11px 14px;
-  background:var(--bg);
-  border:1.5px solid var(--border);
-  border-radius:var(--radius-sm);
-  color:var(--text); font-size:.88rem;
-  font-family:inherit; outline:none;
-  resize:vertical; min-height:72px;
-  transition:border-color .15s;
-  line-height:1.6;
-}
-.comment-area:focus { border-color:var(--accent); background:#fff; }
-.comment-area::placeholder { color:var(--text3); }
-.comment-count { font-size:.72rem; color:var(--text3); text-align:right; margin-top:-10px; }
+.diagram-box svg{display:block;width:100%;height:auto;}
 
-
-/* ═══════════════════════════════════════
-   準備中
-═══════════════════════════════════════ */
-.coming-card {
-  background:var(--surface); border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:56px 24px; text-align:center; color:var(--text3);
-}
-.coming-card .icon { font-size:2.8rem; margin-bottom:12px; }
-
-/* ═══════════════════════════════════════
-   モードバー（固定フッター）
-═══════════════════════════════════════ */
-#mode-bar {
-  position:fixed; bottom:0; left:0; right:0;
-  background:rgba(255,255,255,.97);
-  backdrop-filter:blur(8px);
-  border-top:1px solid var(--border);
-  box-shadow:0 -2px 8px rgba(0,0,0,.06);
-  display:flex; z-index:200;
-}
-.mf-btn {
-  flex:1; background:none; border:none;
-  border-top:2px solid transparent;
-  color:var(--text3); cursor:pointer;
-  font-family:inherit; font-size:.78rem;
-  font-weight:700; letter-spacing:.04em;
-  padding:11px 4px 9px; text-align:center;
-  transition:color .15s, background .15s;
-}
-.mf-btn:hover { color:var(--text2); }
-.mf-btn small { display:block; font-size:.64rem; font-weight:400; margin-top:1px; opacity:.75; }
-.mf-btn.active-study { background:var(--study-bg); border-top-color:var(--study-c); color:var(--study-c); }
-.mf-btn.active-rec   { background:var(--rec-bg);   border-top-color:var(--rec-c);   color:var(--rec-c); }
-
-/* ═══════════════════════════════════════
-   レスポンシブ
-═══════════════════════════════════════ */
-@media(max-width:480px){
-  .topic-grid  { grid-template-columns:repeat(5,1fr); gap:5px; }
-  .topic-btn   { padding:10px 2px 8px; }
-  .topic-name  { font-size:.68rem; }
-  .topic-sub   { font-size:.58rem; }
-  .quiz-question{ font-size:.95rem; }
-  .choice-btn  { font-size:.88rem; padding:11px 12px; }
-}
-
-.sec-note {
-  background:#fff8e6; border:1px solid #f0c060;
-  border-radius:var(--radius-sm);
-  padding:10px 14px; font-size:.82rem;
-  color:#7a4f00; line-height:1.6; margin-bottom:4px;
-}
-
-.orbit-diagram {
-  background:#f0f4fa;
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  overflow:hidden;
-  margin-bottom:4px;
-}
-.orbit-diagram svg { display:block; width:100%; height:auto; }
-.katex { font-size:1em; }
+/* ===== KaTeX ===== */
+.katex{font-size:1em;}
+.katex-display{margin:.3em 0;}
 </style>
 </head>
 <body>
 
-<!-- ══ ヘッダー ══ -->
 <header>
-  <div class="header-inner" id="hd-inner">
-    <div>
-      <div class="header-title">万有引力　基本知識の確認と練習問題</div>
-      <div class="header-sub">力学 ／ 神奈川県立湘南高等学校　物理</div>
-    </div>
-    <div class="header-badge" id="hd-badge" style="display:none"></div>
-  </div>
+  <div class="hdr-school">神奈川県立湘南高等学校　物理</div>
+  <div class="hdr-title">🌌 万有引力 基本知識</div>
+  <div class="hdr-sub" id="hdrSub"></div>
 </header>
 
-<!-- ══ メインコンテンツ ══ -->
-<div class="page-wrap" id="app"></div>
+<div class="tabs"><div class="tabs-inner" id="tabs"></div></div>
 
-<!-- ══ モードバー ══ -->
-<div id="mode-bar">
-  <button class="mf-btn" id="mf-study"  onclick="switchMode('study')">
-    📖 自習モード<small id="mf-s-sub">クリックで切替</small>
-  </button>
-  <button class="mf-btn" id="mf-record" onclick="switchMode('record')">
-    📤 学習記録送信<small id="mf-r-sub">クリックで切替</small>
-  </button>
+<div class="main">
+  <div class="mode-row">
+    <button class="mode-btn" id="modeIntro"  onclick="setMode('intro')">🔰 初学モード</button>
+    <button class="mode-btn" id="modeStudy"  onclick="setMode('study')">📖 自習モード</button>
+    <button class="mode-btn" id="modeSubmit" onclick="setMode('submit')">📤 送信モード</button>
+  </div>
+  <div id="content"></div>
 </div>
 
 <script>
-const GAS_URL='https://script.google.com/macros/s/AKfycbwx1RqClKjzSOvhyGBdfx0QXXoSAMVG3gAnEZB4ZaRlLcE6KNp-UBfP0BResca7XQQ/exec';
+var renderReady = false;
+var pendingRender = null;
 
+// ============================================================
+// CONFIGURATION
+// ============================================================
+const SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbwx1RqClKjzSOvhyGBdfx0QXXoSAMVG3gAnEZB4ZaRlLcE6KNp-UBfP0BResca7XQQ/exec';
 
-/* ── 軌道図SVG ── */
-const DIAGRAMS = {
-  3: `<svg viewBox="0 0 500 340" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans JP',sans-serif">
-  <rect width="500" height="340" fill="#f0f4fa" rx="10"/>
-  <!-- タイトル -->
-  <text x="250" y="26" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1a2236">衛星の軌道図　（R = 地球の半径）</text>
+// ============================================================
+// SECTIONS & QUESTIONS  （choices[0] が常に正解）
+// ============================================================
+const SECTIONS = [
+  {
+    id:1, label:'① ケプラーの法則', subtitle:'ケプラーの法則と万有引力', available:true,
+    questions:[
+      { id:1, text:'ティコ・ブラーエの膨大な観測結果をもとに、万有引力の法則につながる天体に関する三法則を発見したのはだれか。',
+        choices:['ケプラー','ニュートン','ガリレオ','ハッブル'] },
+      { id:2, text:'ケプラーの第一法則によると、太陽系の惑星はどのような軌道をしているか。',
+        choices:['太陽を焦点とする楕円軌道','太陽を中心とする円軌道'] },
+      { id:3, text:'ケプラーの第二法則によると、惑星の運動において一定であるのは次のどれか。',
+        choices:['面積速度','速さ','加速度'] },
+      { id:4, text:'ケプラーの第三法則によると、公転周期 $T$ と半長軸 $a$ の間にはどのような関係があるか。',
+        choices:['$\\dfrac{T^2}{a^3}=k$','$\\dfrac{T^2}{a^2}=k$','$\\dfrac{T^3}{a^2}=k$','$\\dfrac{T^3}{a^3}=k$'] },
+      { id:5, ctx:'【万有引力の導出①】質量 $m$ の惑星の楕円軌道を半径 $r$ の円軌道と近似する。惑星にはたらく向心力を $F$、角速度を $\\omega$ とする。',
+        text:'このとき、運動方程式は',
+        choices:['$F=mr\\omega^2$','$F=\\dfrac{m\\omega^2}{r}$'] },
+      { id:6, ctx:'【万有引力の導出②】ケプラーの第三法則において、半長軸 $a$ を $r$ に置きかえる。',
+        text:'このとき $T^2$ は',
+        choices:['$kr^3$','$kr^2$','$\\dfrac{k}{r^3}$'] },
+      { id:7, text:'角速度 $\\omega$ を周期 $T$ を用いて表すと',
+        choices:['$\\omega=\\dfrac{2\\pi}{T}$','$\\omega=2\\pi T$','$\\omega=\\dfrac{T}{2\\pi}$'] },
+      { id:8, text:'$T^2=kr^3$ および $\\omega=\\dfrac{2\\pi}{T}$ から、運動方程式 $F=mr\\omega^2$ を変形すると',
+        choices:['$F=\\dfrac{4\\pi^2 m}{kr^2}$','$F=\\dfrac{2\\pi^2 m}{kr^2}$','$F=\\dfrac{4\\pi^2 m}{kr^3}$','$F=\\dfrac{4\\pi^2 m}{kr}$'] },
+      { id:9, ctx:'ニュートンは $F=\\dfrac{4\\pi^2 m}{kr^2}$ が太陽と惑星の間にはたらく力であり、作用・反作用の法則から太陽の質量 $M$ も含まれるはずだと考えた。',
+        text:'定数 $G$ と太陽の質量 $M$ を用いると',
+        choices:['$\\dfrac{4\\pi^2}{k}=GM$','$\\dfrac{4\\pi^2}{kr^2}=GM$','$\\dfrac{4\\pi^2}{k}=\\dfrac{G}{M}$','$\\dfrac{4\\pi^2}{k}=\\dfrac{M}{G}$'] },
+      { id:10, text:'$F=\\dfrac{4\\pi^2 m}{kr^2}$ において $\\dfrac{4\\pi^2}{k}=GM$ とおくと、万有引力の法則は',
+        choices:['$F=G\\dfrac{Mm}{r^2}$','$F=G\\dfrac{Mm}{r}$','$F=\\dfrac{Gm}{r^2}$','$F=\\dfrac{GM}{r^2}$'] }
+    ]
+  },
+  {
+    id:2, label:'② 宇宙速度', subtitle:'位置エネルギーと宇宙速度', available:true,
+    questions:[
+      { id:11, ctx:'質量 $m$ の物体を距離 $r$ の地点から無限遠までゆっくり運ぶとき、万有引力 $F=G\\dfrac{Mm}{r^2}$ に逆らってした仕事は距離 $r$ 地点と無限遠地点の万有引力による位置エネルギー $U$ の差に等しい。つまり、万有引力 $F=G\\dfrac{Mm}{r^2}$ を $r$ から無限大まで積分した値と等しい。無限遠を $U=0$ の基準とする。',
+        text:'距離 $r$ 地点における万有引力による位置エネルギー $U$ は',
+        choices:['$U=-G\\dfrac{Mm}{r}$','$U=-G\\dfrac{Mm}{r^2}$','$U=G\\dfrac{Mm}{r}$','$U=-G\\dfrac{Mm}{r^3}$'] },
+      { id:12, text:'第一宇宙速度とはどれか。',
+        choices:['地球の表面上を等速円運動する最小の速さ','地球から無限遠に到達する最小の初速度の大きさ','太陽系を抜け出すために必要な初速度の大きさ'] },
+      { id:13, ctx:'【第一宇宙速度の導出】地球の半径を $R$、質量を $M$、物体の質量を $m$、万有引力定数を $G$ とする。地表での等速円運動において、向心力は万有引力に等しい。',
+        text:'向心力 $F$ は',
+        choices:['$F=G\\dfrac{Mm}{R^2}$','$F=G\\dfrac{Mm}{2R}$','$F=\\dfrac{GM}{R^2}$','$F=G\\dfrac{Mm}{R^3}$'] },
+      { id:14, text:'向心力 $G\\dfrac{Mm}{R^2}$ と速さ $v$ の円運動の運動方程式は',
+        choices:['$G\\dfrac{Mm}{R^2}=\\dfrac{mv^2}{R}$','$G\\dfrac{Mm}{R^2}=mRv^2$','$G\\dfrac{Mm}{R^2}=\\dfrac{mR}{v^2}$'] },
+      { id:15, text:'運動方程式 $G\\dfrac{Mm}{R^2}=\\dfrac{mv^2}{R}$ より、第一宇宙速度 $v$ は',
+        choices:['$v=\\sqrt{\\dfrac{GM}{R}}$','$v=\\dfrac{GM}{R}$','$v=\\left(\\dfrac{GM}{R}\\right)^{3/2}$','$v=\\sqrt{\\dfrac{R}{GM}}$'] },
+      { id:16, text:'第二宇宙速度とはどれか。',
+        choices:['地球から無限遠に到達する最小の初速度の大きさ','地球の表面上を等速円運動する最小の速さ','太陽系を抜け出すために必要な初速度の大きさ'] },
+      { id:17, ctx:'【第二宇宙速度の導出】地球の半径を $R$、質量を $M$、物体の質量を $m$、万有引力定数を $G$ とする。地球表面から初速 $v$ で鉛直に打ち上げる。',
+        text:'地球表面での力学的エネルギー $E$ は',
+        choices:['$E=\\dfrac{1}{2}mv^2-G\\dfrac{Mm}{R}$','$E=\\dfrac{1}{2}mv^2+G\\dfrac{Mm}{R}$','$E=\\dfrac{1}{2}mv^2-G\\dfrac{Mm}{R^2}$','$E=\\dfrac{1}{2}mv^2+G\\dfrac{Mm}{R^2}$'] },
+      { id:18, text:'無限遠に到着したとき速さが $0$ になったとすると、無限遠での力学的エネルギーは',
+        choices:['$0$','$\\infty$','$-G\\dfrac{Mm}{R}$'] },
+      { id:19, text:'力学的エネルギー保存則 $\\dfrac{1}{2}mv^2-G\\dfrac{Mm}{R}=0$ より、第二宇宙速度 $v$ は',
+        choices:['$v=\\sqrt{\\dfrac{2GM}{R}}$','$v=\\dfrac{2GM}{R}$','$v=\\sqrt{\\dfrac{GM}{R}}$','$v=\\sqrt{\\dfrac{R}{2GM}}$'] }
+    ]
+  },
+  {
+    id:3, label:'③ 重力と万有引力', subtitle:'重力加速度と万有引力', available:true,
+    questions:[
+      { id:20, text:'地球表面での重力加速度の大きさを $g$ とすると、質量 $m$ の物体にはたらく重力の大きさは',
+        choices:['$mg$','$m$','$mG$'] },
+      { id:21, ctx:'地球表面の地球の中心からの距離（地球の半径）を $R$、地球の質量を $M$、万有引力定数を $G$ とする。',
+        text:'質量 $m$ の物体にはたらく万有引力の大きさは',
+        choices:['$G\\dfrac{Mm}{R^2}$','$G\\dfrac{Mm}{R}$','$G\\dfrac{Mm}{2R^2}$','$\\dfrac{Gm}{R^2}$'] },
+      { id:22, ctx:'重力の大きさ $mg$ は、地球と物体の間にはたらく万有引力の大きさ $G\\dfrac{Mm}{R^2}$ に他ならない。',
+        text:'重力加速度 $g$ を $G$，$M$，$R$ を用いて表すと',
+        choices:['$\\dfrac{GM}{R^2}$','$\\dfrac{GM}{R}$','$\\dfrac{Gm}{R^2}$','$\\dfrac{R^2}{GM}$'] },
+      { id:23, text:'地球は自転をしているので、実際には重力の大きさと万有引力の大きさは一致しない。このとき考慮すべき力は何か。',
+        choices:['慣性力（遠心力）','空気抵抗力','向心力','復元力'] },
+      { id:24, ctx:'$g=\\dfrac{GM}{R^2}$ とする。',
+        text:'地球表面から高さ $h$ の地点における万有引力の大きさを $m,g,R,h$ を用いて表すと',
+        choices:['$\\dfrac{mgR^2}{(R+h)^2}$','$mg$','$\\dfrac{mgR}{(R+h)^2}$','$\\dfrac{mgR^2}{R+h}$'] },
+      { id:25, ctx:'無限遠を万有引力による位置エネルギーの基準とする。$g=\\dfrac{GM}{R^2}$ とする。',
+        text:'高さ $h$ における物体がもつ万有引力による位置エネルギーを $m,g,R,h$ を用いて表すと',
+        choices:['$-\\dfrac{mgR^2}{R+h}$','$-\\dfrac{mgR}{R+h}$','$\\dfrac{mgR^2}{R+h}$','$-\\dfrac{mgR^2}{(R+h)^2}$'] },
+      { id:26, ctx:'地球表面を万有引力による位置エネルギーの基準とする。$g=\\dfrac{GM}{R^2}$ とする。',
+        text:'高さ $h$ における万有引力による位置エネルギーを $m,g,R,h$ を用いて表すと',
+        choices:['$\\dfrac{mghR}{R+h}$','$mgh$','$\\dfrac{mgR}{R+h}$','$\\dfrac{mghR^2}{R+h}$'] }
+    ]
+  },
+  {
+    id:4, label:'④ 人工衛星', subtitle:'人工衛星と楕円軌道', available:true,
+    note:'基本④の問題は全てつながっています。',
+    questions:[
+      { id:27, ctx:'地球の質量を $M$、半径を $R$、万有引力定数を $G$ とする。地球の周りを半径 $2R$ で等速円運動する質量 $m$ の衛星がある。衛星の速さを $v_0$ とする。',
+        text:'この衛星の運動方程式を表しなさい。',
+        choices:['$G\\dfrac{Mm}{4R^2}=\\dfrac{mv_0^2}{2R}$','$G\\dfrac{Mm}{2R^2}=\\dfrac{mv_0^2}{2R}$','$G\\dfrac{Mm}{4R^2}=mv_0^2$','$G\\dfrac{Mm}{4R}=\\dfrac{mv_0^2}{2R}$'] },
+      { id:28, ctx:'地球の質量を $M$、半径を $R$、万有引力定数を $G$ とする。地球の周りを半径 $2R$ で等速円運動する質量 $m$ の衛星がある。',
+        text:'衛星の等速円運動の速さ $v_0$ を求めなさい。',
+        choices:['$v_0=\\sqrt{\\dfrac{GM}{2R}}$','$v_0=\\sqrt{\\dfrac{GM}{R}}$','$v_0=\\sqrt{\\dfrac{GM}{4R}}$','$v_0=\\sqrt{\\dfrac{2GM}{R}}$'] },
+      { id:29, ctx:'地球の周りを半径 $2R$ で等速円運動する衛星の速さを $v_0=\\sqrt{\\dfrac{GM}{2R}}$ とする。',
+        text:'この円運動の周期 $T$ を求めなさい。',
+        choices:['$T=4\\pi\\sqrt{\\dfrac{2R^3}{GM}}$','$T=2\\pi\\sqrt{\\dfrac{R^3}{GM}}$','$T=4\\pi\\sqrt{\\dfrac{R^3}{GM}}$','$T=2\\pi\\sqrt{\\dfrac{2R^3}{GM}}$'] },
+      { id:30, ctx:'A点（近地点、地球中心からの距離 $2R$）で加速して速さを $v_A$ にしたところ楕円軌道となった。遠地点B点は地球中心からの距離 $4R$ である。',
+        text:'楕円軌道の半長軸 $a$ を求めなさい。',
+        choices:['$a=3R$','$a=2R$','$a=4R$','$a=6R$'] },
+      { id:31, ctx:'A点（近地点、距離 $2R$、速さ $v_A$）、B点（遠地点、距離 $4R$、速さ $v_B$）。',
+        text:'面積速度一定の法則より $v_B$ を $v_A$ で表しなさい。',
+        choices:['$v_B=\\dfrac{v_A}{2}$','$v_B=2v_A$','$v_B=\\dfrac{v_A}{4}$','$v_B=\\dfrac{v_A}{\\sqrt{2}}$'] },
+      { id:32, ctx:'A点（近地点、距離 $2R$、速さ $v_A$）、B点（遠地点、距離 $4R$）。',
+        text:'A点における力学的エネルギーを $v_A$ を用いて表しなさい。',
+        choices:['$\\dfrac{1}{2}mv_A^2-G\\dfrac{Mm}{2R}$','$\\dfrac{1}{2}mv_A^2+G\\dfrac{Mm}{2R}$','$\\dfrac{1}{2}mv_A^2-G\\dfrac{Mm}{4R^2}$','$mv_A^2-G\\dfrac{Mm}{2R}$'] },
+      { id:33, ctx:'A点（近地点、距離 $2R$、速さ $v_A$）、B点（遠地点、距離 $4R$、速さ $v_B$）。',
+        text:'B点における力学的エネルギーを $v_B$ を用いて表しなさい。',
+        choices:['$\\dfrac{1}{2}mv_B^2-G\\dfrac{Mm}{4R}$','$\\dfrac{1}{2}mv_B^2+G\\dfrac{Mm}{4R}$','$\\dfrac{1}{2}mv_B^2-G\\dfrac{Mm}{2R}$','$mv_B^2-G\\dfrac{Mm}{4R}$'] },
+      { id:34, ctx:'力学的エネルギー保存則と $v_B=\\dfrac{v_A}{2}$ を用いる。',
+        text:'$v_A$，$v_B$ をそれぞれ求めると',
+        choices:['$v_A=\\sqrt{\\dfrac{2GM}{3R}},\\ v_B=\\dfrac{1}{2}\\sqrt{\\dfrac{2GM}{3R}}$','$v_A=\\sqrt{\\dfrac{GM}{2R}},\\ v_B=\\dfrac{1}{2}\\sqrt{\\dfrac{GM}{2R}}$','$v_A=\\sqrt{\\dfrac{GM}{3R}},\\ v_B=\\dfrac{1}{2}\\sqrt{\\dfrac{GM}{3R}}$','$v_A=\\sqrt{\\dfrac{2GM}{R}},\\ v_B=\\dfrac{1}{2}\\sqrt{\\dfrac{2GM}{R}}$'] },
+      { id:35, ctx:'円軌道（半径 $2R$、周期 $T$）と楕円軌道（半長軸 $3R$、周期 $T\'$）にケプラーの第三法則 $\\dfrac{T^2}{(2R)^3}=\\dfrac{T\'^2}{(3R)^3}$ が成り立つ。',
+        text:'楕円軌道の周期 $T\'$ を $T$ を用いて表すと',
+        choices:['$T\'=\\dfrac{3\\sqrt{6}}{4}T$','$T\'=\\dfrac{3\\sqrt{3}}{4}T$','$T\'=\\dfrac{3\\sqrt{6}}{2}T$','$T\'=\\dfrac{9}{4}T$'] }
+    ]
+  }
+];
 
-  <!-- 楕円軌道: 地球を焦点とする。近地点2R, 遠地点4R → 半長軸3R, 半短軸2√2 R -->
-  <!-- R_px=45, Earth=(230,170), EllipseCenter=(185,170), rx=135, ry=127 -->
-  <ellipse cx="185" cy="170" rx="135" ry="127"
-    fill="rgba(230,126,34,0.06)" stroke="#e67e22" stroke-width="2" stroke-dasharray="7,4"/>
+// ============================================================
+// EXPLANATIONS  （問id → 解説）
+// ============================================================
+const EXPLANATIONS = {
+  1:'ケプラーはティコ・ブラーエの観測データを解析し、惑星運動の三法則を発見した。のちにニュートンがこれをもとに万有引力の法則を導いた。',
+  2:'ケプラーの第一法則：惑星は太陽を１つの焦点とする楕円軌道を描く。円軌道ではなく楕円軌道である点に注意。',
+  3:'ケプラーの第二法則（面積速度一定の法則）：太陽と惑星を結ぶ線分が単位時間に掃く面積は一定。',
+  4:'ケプラーの第三法則：公転周期の２乗と半長軸の３乗の比 $\\dfrac{T^2}{a^3}$ はすべての惑星で一定。',
+  5:'円運動の向心加速度は $r\\omega^2$。運動方程式は $F=ma$ より $F=mr\\omega^2$。',
+  6:'ケプラーの第三法則 $\\dfrac{T^2}{a^3}=k$ で $a\\to r$ とすると $T^2=kr^3$。',
+  7:'周期 $T$ で１周（$2\\pi$ ラジアン）回るので、角速度は $\\omega=\\dfrac{2\\pi}{T}$。',
+  8:'$F=mr\\omega^2=mr\\left(\\dfrac{2\\pi}{T}\\right)^2=\\dfrac{4\\pi^2 mr}{T^2}$。$T^2=kr^3$ を代入すると $F=\\dfrac{4\\pi^2 m}{kr^2}$。',
+  9:'作用・反作用の法則より力は太陽の質量 $M$ にも比例するはず。そこで $\\dfrac{4\\pi^2}{k}=GM$ とおいた。',
+  10:'$F=\\dfrac{4\\pi^2 m}{kr^2}=\\dfrac{(GM)m}{r^2}=G\\dfrac{Mm}{r^2}$。これが万有引力の法則である。',
+  11:'$F=G\\dfrac{Mm}{r^2}$ を $r$ から $\\infty$ まで積分すると $U=-G\\dfrac{Mm}{r}$ が得られる。',
+  12:'第一宇宙速度：地表すれすれで円運動する速さ。第二宇宙速度：地球を脱出できる最小速度。',
+  13:'地表面（半径 $R$）での円運動の向心力は万有引力 $G\\dfrac{Mm}{R^2}$ に等しい。',
+  14:'向心加速度は $\\dfrac{v^2}{R}$ なので、$m\\cdot\\dfrac{v^2}{R}=G\\dfrac{Mm}{R^2}$ となる。',
+  15:'$\\dfrac{v^2}{R}=\\dfrac{GM}{R^2}$ より $v^2=\\dfrac{GM}{R}$、よって $v=\\sqrt{\\dfrac{GM}{R}}$。約 $7.9\\,\\mathrm{km/s}$。',
+  16:'無限遠に「到達できる」最小初速度。到達時の速さは $0$ となる。',
+  17:'力学的エネルギー $=$ 運動エネルギー $+$ 位置エネルギー $=\\dfrac{1}{2}mv^2-G\\dfrac{Mm}{R}$。',
+  18:'無限遠では $U=0$（基準点）かつ $v=0$ なので、力学的エネルギー $=0$。',
+  19:'$\\dfrac{1}{2}mv^2=G\\dfrac{Mm}{R}$ より $v^2=\\dfrac{2GM}{R}$、よって $v=\\sqrt{\\dfrac{2GM}{R}}$。第一宇宙速度の $\\sqrt{2}$ 倍（約 $11.2\\,\\mathrm{km/s}$）。',
+  20:'重力加速度 $g$ のもとで質量 $m$ の物体にはたらく重力は $F=mg$（運動の第二法則より）。',
+  21:'万有引力の法則：$F=G\\dfrac{Mm}{R^2}$。分母は中心間距離の２乗。',
+  22:'$mg=G\\dfrac{Mm}{R^2}$ の両辺を $m$ で割ると $g=\\dfrac{GM}{R^2}$。',
+  23:'自転する地球上の物体は回転運動をしているため、慣性力（遠心力）が外向きにはたらく。重力＝万有引力－遠心力（の成分）。',
+  24:'$F=G\\dfrac{Mm}{(R+h)^2}$ に $GM=gR^2$ を代入すると $F=\\dfrac{mgR^2}{(R+h)^2}$。',
+  25:'$U=-G\\dfrac{Mm}{R+h}$ に $GM=gR^2$ を代入すると $U=-\\dfrac{mgR^2}{R+h}$。',
+  26:'$\\Delta U=U(h)-U(0)=-\\dfrac{mgR^2}{R+h}-\\left(-\\dfrac{mgR^2}{R}\\right)=\\dfrac{mghR}{R+h}$。$h\\ll R$ のとき $\\approx mgh$。',
+  27:'向心力＝万有引力より $G\\dfrac{Mm}{(2R)^2}=\\dfrac{mv_0^2}{2R}$、すなわち $G\\dfrac{Mm}{4R^2}=\\dfrac{mv_0^2}{2R}$。',
+  28:'$G\\dfrac{Mm}{4R^2}=\\dfrac{mv_0^2}{2R}$ より $v_0^2=\\dfrac{GM}{2R}$、よって $v_0=\\sqrt{\\dfrac{GM}{2R}}$。',
+  29:'$G\\dfrac{Mm}{4R^2}=\\dfrac{mv_0^2}{2R}$ より $v_0=\\sqrt{\\dfrac{GM}{2R}}$。$T=\\dfrac{2\\pi\\cdot 2R}{v_0}=4\\pi\\sqrt{\\dfrac{2R^3}{GM}}$。',
+  30:'半長軸 $a=\\dfrac{\\text{近地点距離}+\\text{遠地点距離}}{2}=\\dfrac{2R+4R}{2}=3R$。',
+  31:'面積速度一定より $\\dfrac{1}{2}\\cdot 2R\\cdot v_A=\\dfrac{1}{2}\\cdot 4R\\cdot v_B$、よって $2Rv_A=4Rv_B$ より $v_B=\\dfrac{v_A}{2}$。',
+  32:'A点（距離 $2R$）：$E_A=\\dfrac{1}{2}mv_A^2-G\\dfrac{Mm}{2R}$（運動E＋位置E）。',
+  33:'B点（距離 $4R$）：$E_B=\\dfrac{1}{2}mv_B^2-G\\dfrac{Mm}{4R}$（運動E＋位置E）。',
+  34:'$G\\dfrac{Mm}{4R^2}=\\dfrac{mv_0^2}{2R}$ より $G\\dfrac{Mm}{R}=2mv_0^2$。$E_A=E_B$ と $v_B=\\dfrac{v_A}{2}$ を代入すると $\\dfrac{1}{2}mv_A^2-G\\dfrac{Mm}{2R}=\\dfrac{1}{2}m\\dfrac{v_A^2}{4}-G\\dfrac{Mm}{4R}$、整理して $v_A=\\sqrt{\\dfrac{2GM}{3R}}$、$v_B=\\dfrac{1}{2}\\sqrt{\\dfrac{2GM}{3R}}$。',
+  35:'$G\\dfrac{Mm}{4R^2}=\\dfrac{mv_0^2}{2R}$ より $T=4\\pi\\sqrt{\\dfrac{2R^3}{GM}}$。ケプラーの第三法則 $\\dfrac{T^2}{(2R)^3}=\\dfrac{T\'^2}{(3R)^3}$ より $T\'^2=\\dfrac{27}{8}T^2$、$T\'=\\dfrac{3\\sqrt{6}}{4}T$。'
+};
 
-  <!-- 円軌道: 半径2R=90px, 中心=地球=(230,170) -->
-  <circle cx="230" cy="170" r="90"
-    fill="rgba(26,111,212,0.06)" stroke="#1a6fd4" stroke-width="2" stroke-dasharray="7,4"/>
-
-  <!-- 地球 -->
-  <circle cx="230" cy="170" r="18" fill="#1a6fd4"/>
-  <circle cx="230" cy="170" r="18" fill="none" stroke="#0d47a1" stroke-width="1.5"/>
+// ============================================================
+// DIAGRAMS  （セクション図・問別図）
+// ============================================================
+const SEC_DIAGRAM = {
+  4: `<svg viewBox="0 0 500 340" xmlns="http://www.w3.org/2000/svg" font-family="'Helvetica Neue',Arial,sans-serif">
+  <rect width="500" height="340" fill="#f8fafc" rx="10"/>
+  <text x="250" y="26" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1a202c">衛星の軌道図　（R = 地球の半径）</text>
+  <ellipse cx="185" cy="170" rx="135" ry="127" fill="rgba(230,126,34,0.06)" stroke="#e67e22" stroke-width="2" stroke-dasharray="7,4"/>
+  <circle cx="230" cy="170" r="90" fill="rgba(37,99,235,0.06)" stroke="#2563eb" stroke-width="2" stroke-dasharray="7,4"/>
+  <circle cx="230" cy="170" r="18" fill="#2563eb"/>
+  <circle cx="230" cy="170" r="18" fill="none" stroke="#1e3a8a" stroke-width="1.5"/>
   <text x="230" y="175" text-anchor="middle" font-size="11" font-weight="700" fill="white">地球</text>
-
-  <!-- 焦点マーク（地球中心） -->
-  <circle cx="230" cy="170" r="2.5" fill="#0d47a1"/>
-
-  <!-- A点（近地点）: Earth(230)+90=320, y=170 -->
+  <circle cx="230" cy="170" r="2.5" fill="#1e3a8a"/>
   <circle cx="320" cy="170" r="7" fill="#e67e22"/>
   <text x="333" y="165" font-size="12" font-weight="700" fill="#e67e22">A</text>
   <text x="333" y="178" font-size="9.5" fill="#e67e22">近地点</text>
-
-  <!-- B点（遠地点）: Earth(230)-180=50, y=170 -->
   <circle cx="50" cy="170" r="7" fill="#e67e22"/>
   <text x="12" y="165" font-size="12" font-weight="700" fill="#e67e22">B</text>
   <text x="6" y="178" font-size="9.5" fill="#e67e22">遠地点</text>
-
-  <!-- 衛星（円軌道上）-->
-  <circle cx="230" cy="80" r="7" fill="#1a6fd4"/>
-  <text x="244" y="78" font-size="10" fill="#1a6fd4" font-weight="600">衛星</text>
-
-  <!-- 距離ライン: 2R (Earth→A) -->
-  <line x1="230" y1="194" x2="320" y2="194" stroke="#1a2236" stroke-width="1.2"/>
-  <line x1="230" y1="190" x2="230" y2="198" stroke="#1a2236" stroke-width="1.2"/>
-  <line x1="320" y1="190" x2="320" y2="198" stroke="#1a2236" stroke-width="1.2"/>
-  <text x="275" y="208" text-anchor="middle" font-size="11" font-weight="600" fill="#1a2236">2R</text>
-
-  <!-- 距離ライン: 4R (Earth→B) -->
-  <line x1="50" y1="212" x2="230" y2="212" stroke="#1a2236" stroke-width="1.2"/>
-  <line x1="50"  y1="208" x2="50"  y2="216" stroke="#1a2236" stroke-width="1.2"/>
-  <line x1="230" y1="208" x2="230" y2="216" stroke="#1a2236" stroke-width="1.2"/>
-  <text x="140" y="227" text-anchor="middle" font-size="11" font-weight="600" fill="#1a2236">4R</text>
-
-  <!-- 半長軸ライン -->
+  <circle cx="230" cy="80" r="7" fill="#2563eb"/>
+  <text x="244" y="78" font-size="10" fill="#2563eb" font-weight="600">衛星</text>
+  <line x1="230" y1="194" x2="320" y2="194" stroke="#1a202c" stroke-width="1.2"/>
+  <line x1="230" y1="190" x2="230" y2="198" stroke="#1a202c" stroke-width="1.2"/>
+  <line x1="320" y1="190" x2="320" y2="198" stroke="#1a202c" stroke-width="1.2"/>
+  <text x="275" y="208" text-anchor="middle" font-size="11" font-weight="600" fill="#1a202c">2R</text>
+  <line x1="50" y1="212" x2="230" y2="212" stroke="#1a202c" stroke-width="1.2"/>
+  <line x1="50"  y1="208" x2="50"  y2="216" stroke="#1a202c" stroke-width="1.2"/>
+  <line x1="230" y1="208" x2="230" y2="216" stroke="#1a202c" stroke-width="1.2"/>
+  <text x="140" y="227" text-anchor="middle" font-size="11" font-weight="600" fill="#1a202c">4R</text>
   <line x1="50" y1="152" x2="320" y2="152" stroke="#e67e22" stroke-width="1" stroke-dasharray="4,3" opacity="0.7"/>
   <line x1="50"  y1="148" x2="50"  y2="156" stroke="#e67e22" stroke-width="1"/>
   <line x1="185" y1="148" x2="185" y2="156" stroke="#e67e22" stroke-width="1.5"/>
@@ -510,573 +440,663 @@ const DIAGRAMS = {
   <text x="118" y="149" text-anchor="middle" font-size="10.5" fill="#e67e22" font-weight="600">3R</text>
   <text x="253" y="139" text-anchor="middle" font-size="9" fill="#e67e22">半長軸</text>
   <text x="253" y="149" text-anchor="middle" font-size="10.5" fill="#e67e22" font-weight="600">3R</text>
-
-  <!-- 凡例 -->
   <rect x="340" y="258" width="150" height="66" fill="white" stroke="#d0d8e8" rx="7"/>
-  <line x1="352" y1="278" x2="378" y2="278" stroke="#1a6fd4" stroke-width="2" stroke-dasharray="7,4"/>
-  <text x="384" y="282" font-size="10.5" fill="#1a6fd4">円軌道（半径 2R）</text>
+  <line x1="352" y1="278" x2="378" y2="278" stroke="#2563eb" stroke-width="2" stroke-dasharray="7,4"/>
+  <text x="384" y="282" font-size="10.5" fill="#2563eb">円軌道（半径 2R）</text>
   <line x1="352" y1="302" x2="378" y2="302" stroke="#e67e22" stroke-width="2" stroke-dasharray="7,4"/>
   <text x="384" y="306" font-size="10.5" fill="#e67e22">楕円軌道（半長軸 3R）</text>
 </svg>`
 };
 
-/* ── 問別図 ── */
-const Q_DIAGRAMS = {
-  '2_3': `<svg viewBox="0 0 520 350" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans JP',sans-serif">
+const Q_DIAGRAM = {
+  23: `<svg viewBox="0 0 520 350" xmlns="http://www.w3.org/2000/svg" font-family="'Helvetica Neue',Arial,sans-serif">
 <defs>
   <marker id="qah-g" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#c0392b"/></marker>
   <marker id="qah-c" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#e67e22"/></marker>
-  <marker id="qah-r" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#1a6fd4"/></marker>
+  <marker id="qah-r" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#2563eb"/></marker>
 </defs>
 <rect width="520" height="350" fill="#f8fafc" rx="10"/>
-<text x="260" y="24" text-anchor="middle" font-size="12" font-weight="700" fill="#1a2236">万有引力・慣性力・重力の関係（北半球）</text>
-
-<!-- 地球 -->
+<text x="260" y="24" text-anchor="middle" font-size="12" font-weight="700" fill="#1a202c">万有引力・慣性力・重力の関係（北半球）</text>
 <circle cx="185" cy="192" r="80" fill="#cce5ff" stroke="#4a90d9" stroke-width="2"/>
 <text x="152" y="197" font-size="12" font-weight="700" fill="#1a5276">地球</text>
-
-<!-- 自転軸 -->
 <line x1="185" y1="90" x2="185" y2="295" stroke="#888" stroke-width="1.5" stroke-dasharray="5,4"/>
 <text x="185" y="85" text-anchor="middle" font-size="10.5" fill="#666">N（自転軸）</text>
 <text x="185" y="312" text-anchor="middle" font-size="10.5" fill="#666">S</text>
-
-<!-- 赤道ライン -->
 <line x1="100" y1="192" x2="270" y2="192" stroke="#aaa" stroke-width="1" stroke-dasharray="3,3"/>
-
-<!-- ▼ 北極 (185, 112) ▼ -->
-<circle cx="185" cy="112" r="5" fill="#1a2236"/>
-<text x="197" y="109" font-size="10.5" font-weight="700" fill="#1a2236">北極</text>
-<!-- 万有引力＝重力（下向き・赤） -->
+<circle cx="185" cy="112" r="5" fill="#1a202c"/>
+<text x="197" y="109" font-size="10.5" font-weight="700" fill="#1a202c">北極</text>
 <line x1="185" y1="112" x2="185" y2="162" stroke="#c0392b" stroke-width="2.5" marker-end="url(#qah-g)"/>
-<!-- 重力（青）を少しずらして重ねる -->
-<line x1="188" y1="112" x2="188" y2="158" stroke="#1a6fd4" stroke-width="2" marker-end="url(#qah-r)"/>
+<line x1="188" y1="112" x2="188" y2="158" stroke="#2563eb" stroke-width="2" marker-end="url(#qah-r)"/>
 <text x="193" y="132" font-size="9" fill="#c0392b">万有引力</text>
-<text x="193" y="144" font-size="9" fill="#1a6fd4">重力</text>
+<text x="193" y="144" font-size="9" fill="#2563eb">重力</text>
 <text x="193" y="157" font-size="9" fill="#e67e22">慣性力＝0</text>
-
-<!-- ▼ 北緯45° (242, 135) ▼ -->
-<!-- unit toward center: (-57/80.6, 57/80.6)=(-0.707, 0.707) -->
-<!-- 万有引力: (242,135)→(242-38.9,135+38.9)=(203,174) -->
-<!-- 慣性力: (242,135)→(253,135) len=11 rightward -->
-<!-- 重力: (-38.9+11,38.9)=(-27.9,38.9) → (214,174) -->
-<circle cx="242" cy="135" r="5" fill="#1a2236"/>
-<text x="252" y="130" font-size="10.5" font-weight="700" fill="#1a2236">北緯45°</text>
-<!-- 万有引力（赤） -->
+<circle cx="242" cy="135" r="5" fill="#1a202c"/>
+<text x="252" y="130" font-size="10.5" font-weight="700" fill="#1a202c">北緯45°</text>
 <line x1="242" y1="135" x2="204" y2="173" stroke="#c0392b" stroke-width="2.5" marker-end="url(#qah-g)"/>
-<!-- 慣性力（橙）: 右向き -->
 <line x1="242" y1="135" x2="254" y2="135" stroke="#e67e22" stroke-width="2.5" marker-end="url(#qah-c)"/>
-<!-- 重力（青） -->
-<line x1="242" y1="135" x2="215" y2="174" stroke="#1a6fd4" stroke-width="2.5" marker-end="url(#qah-r)"/>
-<!-- ラベル -->
+<line x1="242" y1="135" x2="215" y2="174" stroke="#2563eb" stroke-width="2.5" marker-end="url(#qah-r)"/>
 <text x="200" y="158" font-size="9" fill="#c0392b">万有引力</text>
 <text x="255" y="128" font-size="9" fill="#e67e22">慣性力</text>
-<text x="218" y="185" font-size="9" fill="#1a6fd4">重力</text>
-
-<!-- ▼ 赤道 (265, 192) ▼ -->
-<!-- 万有引力: leftward 55px → (210,192) -->
-<!-- 慣性力: rightward 15px → (280,192) -->
-<!-- 重力: leftward 40px → (225,192) -->
-<circle cx="265" cy="192" r="5" fill="#1a2236"/>
-<text x="272" y="185" font-size="10.5" font-weight="700" fill="#1a2236">赤道</text>
-<!-- 万有引力（赤、上側） -->
+<text x="218" y="185" font-size="9" fill="#2563eb">重力</text>
+<circle cx="265" cy="192" r="5" fill="#1a202c"/>
+<text x="272" y="185" font-size="10.5" font-weight="700" fill="#1a202c">赤道</text>
 <line x1="265" y1="189" x2="212" y2="189" stroke="#c0392b" stroke-width="2.5" marker-end="url(#qah-g)"/>
-<!-- 慣性力（橙、下側） -->
 <line x1="265" y1="195" x2="281" y2="195" stroke="#e67e22" stroke-width="2.5" marker-end="url(#qah-c)"/>
-<!-- 重力（青、中央） -->
-<line x1="265" y1="192" x2="227" y2="192" stroke="#1a6fd4" stroke-width="2.5" marker-end="url(#qah-r)"/>
-<!-- ラベル -->
+<line x1="265" y1="192" x2="227" y2="192" stroke="#2563eb" stroke-width="2.5" marker-end="url(#qah-r)"/>
 <text x="225" y="185" font-size="9" fill="#c0392b">万有引力</text>
 <text x="282" y="199" font-size="9" fill="#e67e22">慣性力</text>
-<text x="232" y="207" font-size="9" fill="#1a6fd4">重力</text>
-
-<!-- 凡例 -->
+<text x="232" y="207" font-size="9" fill="#2563eb">重力</text>
 <rect x="350" y="130" width="155" height="82" fill="white" stroke="#d0d8e8" rx="7" stroke-width="1.5"/>
 <line x1="362" y1="152" x2="388" y2="152" stroke="#c0392b" stroke-width="2.5" marker-end="url(#qah-g)"/>
 <text x="394" y="156" font-size="10.5" fill="#c0392b">万有引力</text>
 <line x1="362" y1="175" x2="388" y2="175" stroke="#e67e22" stroke-width="2.5" marker-end="url(#qah-c)"/>
 <text x="394" y="179" font-size="10.5" fill="#e67e22">慣性力（遠心力）</text>
-<line x1="362" y1="198" x2="388" y2="198" stroke="#1a6fd4" stroke-width="2.5" marker-end="url(#qah-r)"/>
-<text x="394" y="202" font-size="10.5" fill="#1a6fd4">重力（合力）</text>
-
-<!-- 注記 -->
+<line x1="362" y1="198" x2="388" y2="198" stroke="#2563eb" stroke-width="2.5" marker-end="url(#qah-r)"/>
+<text x="394" y="202" font-size="10.5" fill="#2563eb">重力（合力）</text>
 <text x="260" y="337" text-anchor="middle" font-size="9" fill="#999">※ 慣性力の大きさは約50倍に誇張して表示しています。</text>
 </svg>`
 };
-/* ── KaTeX ── */
-function rm(t){
-  if(typeof katex==='undefined') return t;
-  return t
-    .replace(/\$\$([^$]+)\$\$/g,(_,m)=>katex.renderToString(m,{displayMode:true,throwOnError:false}))
-    .replace(/\$([^$\n]+)\$/g,(_,m)=>katex.renderToString(m,{displayMode:false,throwOnError:false}));
-}
-function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-/* ── データ ── */
-const SECTIONS=[
-  {
-    label:"基本①",sub:"ケプラーの法則と万有引力",
-    questions:[
-      {q:"ティコ・ブラーエの膨大な観測結果をもとに、万有引力の法則につながる天体に関する三法則を発見したのはだれか。",choices:["ケプラー","ニュートン","ガリレオ","ハッブル"],answer:0},
-      {q:"ケプラーの第一法則によると、太陽系の惑星はどのような軌道をしているか。",choices:["太陽を焦点とする楕円軌道","太陽を中心とする円軌道"],answer:0},
-      {q:"ケプラーの第二法則によると、惑星の運動において一定であるのは次のどれか。",choices:["面積速度","速さ","加速度"],answer:0},
-      {q:"ケプラーの第三法則によると、公転周期$T$と半長軸$a$の間にはどのような関係があるか。",choices:["$\\dfrac{T^2}{a^3}=k$","$\\dfrac{T^2}{a^2}=k$","$\\dfrac{T^3}{a^2}=k$","$\\dfrac{T^3}{a^3}=k$"],answer:0},
-      {ctx:"【万有引力の導出①】質量$m$の惑星の楕円軌道を半径$r$の円軌道と近似する。惑星にはたらく向心力を$F$、角速度を$\\omega$とする。",q:"このとき、運動方程式は",choices:["$F=mr\\omega^2$","$F=\\dfrac{m\\omega^2}{r}$"],answer:0},
-      {ctx:"【万有引力の導出②】ケプラーの第三法則において、半長軸$a$を$r$に置きかえる。",q:"このとき$T^2$は",choices:["$kr^3$","$kr^2$","$\\dfrac{k}{r^3}$"],answer:0},
-      {q:"角速度$\\omega$を周期$T$を用いて表すと",choices:["$\\omega=\\dfrac{2\\pi}{T}$","$\\omega=2\\pi T$","$\\omega=\\dfrac{T}{2\\pi}$"],answer:0},
-      {q:"$T^2=kr^3$および$\\omega=\\dfrac{2\\pi}{T}$から、運動方程式$F=mr\\omega^2$を変形すると",choices:["$F=\\dfrac{4\\pi^2 m}{kr^2}$","$F=\\dfrac{2\\pi^2 m}{kr^2}$","$F=\\dfrac{4\\pi^2 m}{kr^3}$","$F=\\dfrac{4\\pi^2 m}{kr}$"],answer:0},
-      {ctx:"ニュートンは$F=\\dfrac{4\\pi^2 m}{kr^2}$が太陽と惑星の間にはたらく力であり、作用・反作用の法則から太陽の質量$M$も含まれるはずだと考えた。",q:"定数$G$と太陽の質量$M$を用いると",choices:["$\\dfrac{4\\pi^2}{k}=GM$","$\\dfrac{4\\pi^2}{kr^2}=GM$","$\\dfrac{4\\pi^2}{k}=\\dfrac{G}{M}$","$\\dfrac{4\\pi^2}{k}=\\dfrac{M}{G}$"],answer:0},
-      {q:"$F=\\dfrac{4\\pi^2 m}{kr^2}$において$\\dfrac{4\\pi^2}{k}=GM$とおくと、万有引力の法則は",choices:["$F=G\\dfrac{Mm}{r^2}$","$F=G\\dfrac{Mm}{r}$","$F=\\dfrac{Gm}{r^2}$","$F=\\dfrac{GM}{r^2}$"],answer:0}
-    ]
-  },
-  {
-    label:"基本②",sub:"位置エネルギーと宇宙速度",
-    questions:[
-      {ctx:"質量$m$の物体を距離$r$の地点から無限遠までゆっくり運ぶとき、万有引力$F=G\\dfrac{Mm}{r^2}$に逆らってした仕事は距離$r$地点と無限遠地点の万有引力による位置エネルギー$U$の差に等しい。つまり、万有引力$F=G\\dfrac{Mm}{r^2}$を$r$から無限大まで積分した値と等しい。無限遠を$U=0$の基準とすると、距離$r$地点における万有引力による位置エネルギー$U$は",q:"距離$r$地点における万有引力による位置エネルギー$U$は",
-        explain:"$F=G\\dfrac{Mm}{r^2}$を$r$から$\\infty$まで積分すると$U=-G\\dfrac{Mm}{r}$が得られる。",choices:["$U=-G\\dfrac{Mm}{r}$","$U=-G\\dfrac{Mm}{r^2}$","$U=G\\dfrac{Mm}{r}$","$U=-G\\dfrac{Mm}{r^3}$"],answer:0},
-      {q:"第一宇宙速度とはどれか。",
-        explain:"第一宇宙速度：地表すれすれで円運動する速さ。第二宇宙速度：地球を脱出できる最小速度。",choices:["地球の表面上を等速円運動する最小の速さ","地球から無限遠に到達する最小の初速度の大きさ","太陽系を抜け出すために必要な初速度の大きさ"],answer:0},
-      {ctx:"【第一宇宙速度の導出】地球の半径を$R$、質量を$M$、物体の質量を$m$、万有引力定数を$G$とする。地表での等速円運動において、向心力は万有引力に等しい。",q:"向心力$F$は",
-        explain:"地表面（半径$R$）での円運動の向心力は万有引力$G\\dfrac{Mm}{R^2}$に等しい。",choices:["$F=G\\dfrac{Mm}{R^2}$","$F=G\\dfrac{Mm}{2R}$","$F=\\dfrac{GM}{R^2}$","$F=G\\dfrac{Mm}{R^3}$"],answer:0},
-      {q:"向心力$G\\dfrac{Mm}{R^2}$と速さ$v$の円運動の運動方程式は",
-        explain:"向心加速度は$\\dfrac{v^2}{R}$なので、$m\\cdot\\dfrac{v^2}{R}=G\\dfrac{Mm}{R^2}$となる。",choices:["$G\\dfrac{Mm}{R^2}=\\dfrac{mv^2}{R}$","$G\\dfrac{Mm}{R^2}=mRv^2$","$G\\dfrac{Mm}{R^2}=\\dfrac{mR}{v^2}$"],answer:0},
-      {q:"運動方程式$G\\dfrac{Mm}{R^2}=\\dfrac{mv^2}{R}$より、第一宇宙速度$v$は",
-        explain:"$\\dfrac{v^2}{R}=\\dfrac{GM}{R^2}$より$v^2=\\dfrac{GM}{R}$、よって$v=\\sqrt{\\dfrac{GM}{R}}$。",choices:["$v=\\sqrt{\\dfrac{GM}{R}}$","$v=\\dfrac{GM}{R}$","$v=\\left(\\dfrac{GM}{R}\\right)^{3/2}$","$v=\\sqrt{\\dfrac{R}{GM}}$"],answer:0},
-      {q:"第二宇宙速度とはどれか。",
-        explain:"無限遠に「到達できる」最小初速度。到達時の速さは0となる。",choices:["地球から無限遠に到達する最小の初速度の大きさ","地球の表面上を等速円運動する最小の速さ","太陽系を抜け出すために必要な初速度の大きさ"],answer:0},
-      {ctx:"【第二宇宙速度の導出】地球の半径を$R$、質量を$M$、物体の質量を$m$、万有引力定数を$G$とする。地球表面から初速$v$で鉛直に打ち上げる。",q:"地球表面での力学的エネルギー$E$は",
-        explain:"力学的エネルギー$=$ 運動エネルギー$+$位置エネルギー$=\\dfrac{1}{2}mv^2-G\\dfrac{Mm}{R}$。",choices:["$E=\\dfrac{1}{2}mv^2-G\\dfrac{Mm}{R}$","$E=\\dfrac{1}{2}mv^2+G\\dfrac{Mm}{R}$","$E=\\dfrac{1}{2}mv^2-G\\dfrac{Mm}{R^2}$","$E=\\dfrac{1}{2}mv^2+G\\dfrac{Mm}{R^2}$"],answer:0},
-      {q:"無限遠に到着したとき速さが$0$になったとすると、無限遠での力学的エネルギーは",
-        explain:"無限遠では$U=0$（基準点）かつ$v=0$なので、力学的エネルギー$=0$。",choices:["$0$","$\\infty$","$-G\\dfrac{Mm}{R}$"],answer:0},
-      {q:"力学的エネルギー保存則$\\dfrac{1}{2}mv^2-G\\dfrac{Mm}{R}=0$より、第二宇宙速度$v$は",
-        explain:"$\\dfrac{1}{2}mv^2=G\\dfrac{Mm}{R}$より$v^2=\\dfrac{2GM}{R}$、よって$v=\\sqrt{\\dfrac{2GM}{R}}$。第一宇宙速度の$\\sqrt{2}$倍。",choices:["$v=\\sqrt{\\dfrac{2GM}{R}}$","$v=\\dfrac{2GM}{R}$","$v=\\sqrt{\\dfrac{GM}{R}}$","$v=\\sqrt{\\dfrac{R}{2GM}}$"],answer:0}
-    ]
-  },
-  {
-    label:"基本③",sub:"重力加速度と万有引力",
-    questions:[
-      {q:"地球表面での重力加速度の大きさを$g$とすると、質量$m$の物体にはたらく重力の大きさは",
-        explain:"重力加速度$g$のもとで質量$m$の物体にはたらく重力は$F=mg$（運動の第二法則より）。",
-        choices:["$mg$","$m$","$mG$"],answer:0},
-      {ctx:"地球表面の地球の中心からの距離（地球の半径）を$R$、地球の質量を$M$、万有引力定数を$G$とする。",q:"質量$m$の物体にはたらく万有引力の大きさは",
-        explain:"万有引力の法則：$F=G\\dfrac{Mm}{R^2}$。分母は中心間距離の2乗。",choices:["$G\\dfrac{Mm}{R^2}$","$G\\dfrac{Mm}{R}$","$G\\dfrac{Mm}{2R^2}$","$\\dfrac{Gm}{R^2}$"],answer:0},
-      {ctx:"重力の大きさ$mg$は、地球と物体の間にはたらく万有引力の大きさ$G\\dfrac{Mm}{R^2}$に他ならない。",q:"重力加速度$g$を$G$，$M$，$R$を用いて表すと",
-        explain:"$mg=G\\dfrac{Mm}{R^2}$の両辺を$m$で割ると$g=\\dfrac{GM}{R^2}$。",choices:["$\\dfrac{GM}{R^2}$","$\\dfrac{GM}{R}$","$\\dfrac{Gm}{R^2}$","$\\dfrac{R^2}{GM}$"],answer:0},
-      {q:"地球は自転をしているので、実際には重力の大きさと万有引力の大きさは一致しない。このとき考慮すべき力は何か。",
-        explain:"自転する地球上の物体は回転運動をしているため、慣性力（遠心力）が外向きにはたらく。重力＝万有引力－遠心力（の成分）。",choices:["慣性力（遠心力）","空気抵抗力","向心力","復元力"],answer:0},
-      {ctx:"$g=\\dfrac{GM}{R^2}$とする。",q:"地球表面から高さ$h$の地点における万有引力の大きさを$m,g,R,h$を用いて表すと",
-        explain:"$F=G\\dfrac{Mm}{(R+h)^2}$に$GM=gR^2$を代入すると$F=\\dfrac{mgR^2}{(R+h)^2}$。",choices:["$\\dfrac{mgR^2}{(R+h)^2}$","$mg$","$\\dfrac{mgR}{(R+h)^2}$","$\\dfrac{mgR^2}{R+h}$"],answer:0},
-      {ctx:"無限遠を万有引力による位置エネルギーの基準とする。$g=\\dfrac{GM}{R^2}$とする。",q:"高さ$h$における物体がもつ万有引力による位置エネルギーを$m,g,R,h$を用いて表すと",
-        explain:"$U=-G\\dfrac{Mm}{R+h}$に$GM=gR^2$を代入すると$U=-\\dfrac{mgR^2}{R+h}$。",choices:["$-\\dfrac{mgR^2}{R+h}$","$-\\dfrac{mgR}{R+h}$","$\\dfrac{mgR^2}{R+h}$","$-\\dfrac{mgR^2}{(R+h)^2}$"],answer:0},
-      {ctx:"地球表面を万有引力による位置エネルギーの基準とする。$g=\\dfrac{GM}{R^2}$とする。",q:"高さ$h$における万有引力による位置エネルギーを$m,g,R,h$を用いて表すと",
-        explain:"$\\Delta U=U(h)-U(0)=-\\dfrac{mgR^2}{R+h}-\\left(-\\dfrac{mgR^2}{R}\\right)=\\dfrac{mghR}{R+h}$。$h\\ll R$のとき$\\approx mgh$。",choices:["$\\dfrac{mghR}{R+h}$","$mgh$","$\\dfrac{mgR}{R+h}$","$\\dfrac{mghR^2}{R+h}$"],answer:0}
-    ]
-  },
-  {
-    label:"基本④",sub:"人工衛星と楕円軌道",
-    note:"基本④の問題は全てつながっています。",
-    questions:[
-      {
-        ctx:"地球の質量を$M$、半径を$R$、万有引力定数を$G$とする。地球の周りを半径$2R$で等速円運動する質量$m$の衛星がある。衛星の速さを$v_0$とする。",
-        q:"この衛星の運動方程式を表しなさい。",
-        explain:"向心力＝万有引力より$G\\dfrac{Mm}{(2R)^2}=\\dfrac{mv_0^2}{2R}$、すなわち$G\\dfrac{Mm}{4R^2}=\\dfrac{mv_0^2}{2R}$。",
-        choices:["$G\\dfrac{Mm}{4R^2}=\\dfrac{mv_0^2}{2R}$","$G\\dfrac{Mm}{2R^2}=\\dfrac{mv_0^2}{2R}$","$G\\dfrac{Mm}{4R^2}=mv_0^2$","$G\\dfrac{Mm}{4R}=\\dfrac{mv_0^2}{2R}$"],
-        answer:0
-      },
-      {
-        ctx:"地球の質量を$M$、半径を$R$、万有引力定数を$G$とする。地球の周りを半径$2R$で等速円運動する質量$m$の衛星がある。",
-        q:"衛星の等速円運動の速さ$v_0$を求めなさい。",
-        explain:"$G\\dfrac{Mm}{4R^2}=\\dfrac{mv_0^2}{2R}$より$v_0^2=\\dfrac{GM}{2R}$、よって$v_0=\\sqrt{\\dfrac{GM}{2R}}$。",
-        choices:["$v_0=\\sqrt{\\dfrac{GM}{2R}}$","$v_0=\\sqrt{\\dfrac{GM}{R}}$","$v_0=\\sqrt{\\dfrac{GM}{4R}}$","$v_0=\\sqrt{\\dfrac{2GM}{R}}$"],
-        answer:0
-      },
-      {
-        ctx:"地球の周りを半径$2R$で等速円運動する衛星の速さを$v_0=\\sqrt{\\dfrac{GM}{2R}}$とする。",
-        q:"この円運動の周期$T$を求めなさい。",
-        explain:"$G\\dfrac{Mm}{4R^2}=\\dfrac{mv_0^2}{2R}$より$v_0=\\sqrt{\\dfrac{GM}{2R}}$。$T=\\dfrac{2\\pi\\cdot 2R}{v_0}=4\\pi\\sqrt{\\dfrac{2R^3}{GM}}$。",
-        choices:["$T=4\\pi\\sqrt{\\dfrac{2R^3}{GM}}$","$T=2\\pi\\sqrt{\\dfrac{R^3}{GM}}$","$T=4\\pi\\sqrt{\\dfrac{R^3}{GM}}$","$T=2\\pi\\sqrt{\\dfrac{2R^3}{GM}}$"],
-        answer:0
-      },
-      {
-        ctx:"A点（近地点、地球中心からの距離$2R$）で加速して速さを$v_A$にしたところ楕円軌道となった。遠地点B点は地球中心からの距離$4R$である。",
-        q:"楕円軌道の半長軸$a$を求めなさい。",
-        explain:"半長軸$a=\\dfrac{\\text{近地点距離}+\\text{遠地点距離}}{2}=\\dfrac{2R+4R}{2}=3R$。",
-        choices:["$a=3R$","$a=2R$","$a=4R$","$a=6R$"],
-        answer:0
-      },
-      {
-        ctx:"A点（近地点、距離$2R$、速さ$v_A$）、B点（遠地点、距離$4R$、速さ$v_B$）。",
-        q:"面積速度一定の法則より$v_B$を$v_A$で表しなさい。",
-        explain:"面積速度一定より$\\dfrac{1}{2}\\cdot 2R\\cdot v_A=\\dfrac{1}{2}\\cdot 4R\\cdot v_B$、よって$2Rv_A=4Rv_B$より$v_B=\\dfrac{v_A}{2}$。",
-        choices:["$v_B=\\dfrac{v_A}{2}$","$v_B=2v_A$","$v_B=\\dfrac{v_A}{4}$","$v_B=\\dfrac{v_A}{\\sqrt{2}}$"],
-        answer:0
-      },
-      {
-        ctx:"A点（近地点、距離$2R$、速さ$v_A$）、B点（遠地点、距離$4R$）。",
-        q:"A点における力学的エネルギーを$v_A$を用いて表しなさい。",
-        explain:"A点（距離$2R$）：$E_A=\\dfrac{1}{2}mv_A^2-G\\dfrac{Mm}{2R}$（運動E＋位置E）。",
-        choices:["$\\dfrac{1}{2}mv_A^2-G\\dfrac{Mm}{2R}$","$\\dfrac{1}{2}mv_A^2+G\\dfrac{Mm}{2R}$","$\\dfrac{1}{2}mv_A^2-G\\dfrac{Mm}{4R^2}$","$mv_A^2-G\\dfrac{Mm}{2R}$"],
-        answer:0
-      },
-      {
-        ctx:"A点（近地点、距離$2R$、速さ$v_A$）、B点（遠地点、距離$4R$、速さ$v_B$）。",
-        q:"B点における力学的エネルギーを$v_B$を用いて表しなさい。",
-        explain:"B点（距離$4R$）：$E_B=\\dfrac{1}{2}mv_B^2-G\\dfrac{Mm}{4R}$（運動E＋位置E）。",
-        choices:["$\\dfrac{1}{2}mv_B^2-G\\dfrac{Mm}{4R}$","$\\dfrac{1}{2}mv_B^2+G\\dfrac{Mm}{4R}$","$\\dfrac{1}{2}mv_B^2-G\\dfrac{Mm}{2R}$","$mv_B^2-G\\dfrac{Mm}{4R}$"],
-        answer:0
-      },
-      {
-        ctx:"力学的エネルギー保存則と$v_B=\\dfrac{v_A}{2}$を用いる。",
-        q:"$v_A$，$v_B$をそれぞれ求めると",
-        explain:"$G\\dfrac{Mm}{4R^2}=\\dfrac{mv_0^2}{2R}$より$G\\dfrac{Mm}{R}=2mv_0^2$。$E_A=E_B$と$v_B=\\dfrac{v_A}{2}$を代入すると$\\dfrac{1}{2}mv_A^2-G\\dfrac{Mm}{2R}=\\dfrac{1}{2}m\\dfrac{v_A^2}{4}-G\\dfrac{Mm}{4R}$、整理して$v_A=\\sqrt{\\dfrac{2GM}{3R}}$、$v_B=\\dfrac{1}{2}\\sqrt{\\dfrac{2GM}{3R}}$。",
-        choices:["$v_A=\\sqrt{\\dfrac{2GM}{3R}},\ v_B=\\dfrac{1}{2}\\sqrt{\\dfrac{2GM}{3R}}$","$v_A=\\sqrt{\\dfrac{GM}{2R}},\ v_B=\\dfrac{1}{2}\\sqrt{\\dfrac{GM}{2R}}$","$v_A=\\sqrt{\\dfrac{GM}{3R}},\ v_B=\\dfrac{1}{2}\\sqrt{\\dfrac{GM}{3R}}$","$v_A=\\sqrt{\\dfrac{2GM}{R}},\ v_B=\\dfrac{1}{2}\\sqrt{\\dfrac{2GM}{R}}$"],
-        answer:0
-      },
-      {
-        ctx:"円軌道（半径$2R$、周期$T$）と楕円軌道（半長軸$3R$、周期$T'$）にケプラーの第三法則$\\dfrac{T^2}{(2R)^3}=\\dfrac{T'^2}{(3R)^3}$が成り立つ。",
-        q:"楕円軌道の周期$T'$を$T$を用いて表すと",
-        explain:"$G\\dfrac{Mm}{4R^2}=\\dfrac{mv_0^2}{2R}$より$T=4\\pi\\sqrt{\\dfrac{2R^3}{GM}}$。ケプラー第三法則$\\dfrac{T^2}{(2R)^3}=\\dfrac{T'^2}{(3R)^3}$より$T'^2=\\dfrac{27}{8}T^2$、$T'=\\dfrac{3\\sqrt{6}}{4}T$。",
-        choices:["$T'=\\dfrac{3\\sqrt{6}}{4}T$","$T'=\\dfrac{3\\sqrt{3}}{4}T$","$T'=\\dfrac{3\\sqrt{6}}{2}T$","$T'=\\dfrac{9}{4}T$"],
-        answer:0
-      }
-    ]
-  },
-];
+// ============================================================
+// STATE
+// ============================================================
+let curSec  = 1;
+let curMode = 'study';
 
-/* ── State ── */
-const S={
-  mode:null,
-  cls:'', name:'',
-  secIdx:0,
-  screen:'menu', // menu | mode-select | input | quiz | result
-  displayQueue:[], qPos:0,
-  firstResult:[], score:0,
-  shuffled:[], answered:false, selIdx:null,
-  sending:false, submitted:false, sendError:false,
-  comment:''
+// 初学モード状態
+const im = { idx:0, secId:null };
+
+// 自習モード状態
+const ss = {
+  secId      : null,
+  total      : 0,
+  queue      : [],
+  solved     : new Set(),
+  attempted  : new Set(),
+  answered   : false,
+  correct    : 0,
+  wrong      : 0,
+  lastCorrect: false,
+  chosen     : []
 };
 
-function sec(){ return SECTIONS[S.secIdx]; }
+// 送信モード状態
+const sm = {
+  secId               : null,
+  num                 : '',
+  name                : '',
+  started             : false,
+  total               : 0,
+  queue               : [],
+  solved              : new Set(),
+  attempted           : new Set(),
+  firstAttemptCorrect : {},
+  answered            : false,
+  lastCorrect         : false,
+  lastPickedCi        : null,
+  chosen              : []
+};
 
-function shuffle(arr){
-  const a=arr.map((t,i)=>({text:t,orig:i}));
-  for(let i=a.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
-  }
-  return a;
-}
-function initSection(){
-  const qs=sec().questions;
-  S.displayQueue=qs.map((_,i)=>i);
-  S.qPos=0;
-  S.firstResult=new Array(qs.length).fill(null);
-  S.score=0; S.answered=false; S.selIdx=null;
-  S.submitted=false; S.sendError=false; S.sending=false;
-  S.shuffled=shuffle(qs[0].choices);
-}
-function initQ(){
-  S.answered=false; S.selIdx=null;
-  const origIdx=S.displayQueue[S.qPos];
-  S.shuffled=shuffle(sec().questions[origIdx].choices);
-}
+let orderMode = 'seq'; // 自習モードの出題順  'seq'=学習順  'rand'=ランダム
 
-/* ── Render ── */
-function render(){
-  const app=document.getElementById('app');
-  updateHeader();
-  updateModeBar();
-  switch(S.screen){
-    case 'menu':       app.innerHTML=renderMenu();       break;
-    case 'mode-select':app.innerHTML=renderModeSelect(); break;
-    case 'input':      app.innerHTML=renderInput();      break;
-    case 'quiz':       app.innerHTML=renderQuiz();       break;
-    case 'result':     app.innerHTML=renderResult();     break;
-  }
-  if(S.screen==='input') setTimeout(()=>document.getElementById('inp-cls')?.focus(),50);
+// ============================================================
+// UTILS
+// ============================================================
+function shuffle(a) {
+  const r=[...a];
+  for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}
+  return r;
 }
 
-function updateHeader(){
-  const badge=document.getElementById('hd-badge');
-  if(S.mode==='study'){
-    badge.style.display='block';
-    badge.className='header-badge badge-study';
-    badge.textContent='📖 自習モード';
-  } else if(S.mode==='record'&&S.name){
-    badge.style.display='block';
-    badge.className='header-badge badge-rec';
-    badge.textContent=`📤 ${S.cls}　${S.name}`;
-  } else {
-    badge.style.display='none';
-  }
-}
-
-function updateModeBar(){
-  document.getElementById('mf-study').className ='mf-btn'+(S.mode==='study' ?' active-study':'');
-  document.getElementById('mf-record').className='mf-btn'+(S.mode==='record'?' active-rec':'');
-  document.getElementById('mf-s-sub').textContent=S.mode==='study' ?sec().label:'クリックで切替';
-  document.getElementById('mf-r-sub').textContent=S.mode==='record'&&S.name?`${S.cls} ${S.name}`:'クリックで切替';
-}
-
-/* ── 画面: メニュー ── */
-function renderMenu(){
-  const grid=SECTIONS.map((s,i)=>{
-    const act=i===S.secIdx?'active-sec':'';
-    const dis=s.disabled?'disabled':'';
-    return `<button class="topic-btn ${act}" ${dis} onclick="selectSec(${i})">
-      <div class="topic-num">${i+1}</div>
-      <div class="topic-name">${esc(s.label)}</div>
-      <div class="topic-sub">${esc(s.sub)}</div>
-    </button>`;
-  }).join('');
-  return `
-    <div class="hub-banner">
-      <h2>万有引力　基本知識の確認と練習問題</h2>
-      <p>セクションを選んでモードを選択してください。</p>
-    </div>
-    <div class="topic-grid">${grid}</div>`;
-}
-
-/* ── 画面: モード選択 ── */
-function renderModeSelect(){
-  const s=sec();
-  return `<div class="card">
-    <div class="mode-select-label">${esc(s.label)}　${esc(s.sub)}（${s.questions.length}問）</div>
-    <div class="mode-row">
-      <div class="mode-card study" onclick="chooseMode('study')">
-        <div class="mode-icon">📖</div>
-        <div class="mode-name">自習モード</div>
-        <div class="mode-desc">名前入力なし<br>気軽に練習</div>
-      </div>
-      <div class="mode-card record" onclick="chooseMode('record')">
-        <div class="mode-icon">📤</div>
-        <div class="mode-name">記録送信モード</div>
-        <div class="mode-desc">クラス・氏名を<br>入力して送信</div>
-      </div>
-    </div>
-    <button class="ghost-btn" onclick="goMenu()">← 一覧に戻る</button>
-  </div>`;
-}
-
-/* ── 画面: 名前入力 ── */
-function renderInput(){
-  return `<div class="card">
-    <div class="form-badge">📤 学習記録送信モード</div>
-    <label class="inp-label">クラス番号</label>
-    <input id="inp-cls" class="inp-field" type="text" placeholder="例：C01〜E50" value="${esc(S.cls)}" autocomplete="off">
-    <label class="inp-label">氏名</label>
-    <input id="inp-name" class="inp-field" type="text" placeholder="例：湘南　太郎" value="${esc(S.name)}" autocomplete="off">
-    <div class="err-text" id="inp-err">クラスと氏名を入力してください。</div>
-    <button class="primary-btn" onclick="handleInputStart()">クイズを始める　→</button>
-    <button class="ghost-btn" onclick="goModeSelect()">← モード選択に戻る</button>
-  </div>`;
-}
-
-/* ── 画面: クイズ ── */
-function renderQuiz(){
-  const s=sec();
-  const qs=s.questions;
-  const n=qs.length;
-  const origIdx=S.displayQueue[S.qPos];
-  const q=qs[origIdx];
-  const isRetry=S.firstResult[origIdx]===false;
-  const correctSoFar=S.firstResult.filter(r=>r===true).length;
-  const pct=correctSoFar/n*100;
-
-  const ctx=q.ctx?`<div class="q-context">${rm(q.ctx)}</div>`:'';
-  const retryB=isRetry?`<div class="retry-badge">🔄 再チャレンジ</div>`:'';
-
-  const choices=S.shuffled.map((c,i)=>{
-    let cl='choice-btn';
-    if(S.answered){
-      if(c.orig===q.answer)     cl+=' correct';
-      else if(i===S.selIdx)     cl+=' wrong';
-      else                      cl+=' unchosen';
-    }
-    return `<button class="${cl}" ${S.answered?'disabled':''} onclick="pick(${i})">${rm(c.text)}</button>`;
-  }).join('');
-
-  let fb='';
-  if(S.answered){
-    const ok=S.shuffled[S.selIdx].orig===q.answer;
-    const expHtml=q.explain?`<div class="fb-explain">💡 ${rm(q.explain)}</div>`:'';
-    fb=`<div class="feedback-box ${ok?'fb-ok':'fb-ng'}">${ok?'✓ 正解！':'✗ 不正解。正解は '+rm(q.choices[q.answer])+' です。もう一度後で出題します。'}</div>${expHtml}`;
-  }
-
-  const noteHtml=s.note?`<div class="sec-note">📌 ${esc(s.note)}</div>`:'';
-  const diagramHtml=DIAGRAMS[S.secIdx]!==undefined?`<div class="orbit-diagram">${DIAGRAMS[S.secIdx]}</div>`:'';
-  return `
-    ${noteHtml}
-    <div class="progress-meta">
-      <span>${esc(s.label)}　${esc(s.sub)}</span>
-      <span>正解 ${correctSoFar} / ${n}問</span>
-    </div>
-    <div class="progress-track"><div class="progress-fill" style="width:${pct.toFixed(1)}%"></div></div>
-    <div class="card" style="gap:14px;">
-      ${retryB}
-      <div class="q-num">問 ${origIdx+1}</div>
-      ${ctx}
-      <div class="quiz-question">${rm(q.q)}</div>
-      <div class="quiz-choices">${choices}</div>
-      ${fb}
-      ${S.answered?`<button class="next-btn" onclick="nextQ()">次の問題　→</button>`:''}
-    </div>
-    ${Q_DIAGRAMS[S.secIdx+'_'+origIdx]?`<div class="orbit-diagram">${Q_DIAGRAMS[S.secIdx+'_'+origIdx]}</div>`:''}
-    ${diagramHtml}`;
-}
-
-/* ── 画面: 結果 ── */
-function renderResult(){
-  const s=sec();
-  const n=s.questions.length;
-  const pct=Math.round(S.score/n*100);
-  const isPerfect=S.score===n;
-  const msg=isPerfect?'🌟 全問正解！素晴らしい！':pct>=80?'✨ よくできました！':pct>=60?'📚 もう少し頑張ろう！':'💪 基本を確認しましょう！';
-
-  // 正誤テーブル（5問ずつ）
-  let rows='';
-  for(let r=0;r<Math.ceil(n/5);r++){
-    const s0=r*5, e=Math.min(s0+5,n);
-    let th='',td='';
-    for(let i=s0;i<e;i++){
-      th+=`<th>問${i+1}</th>`;
-      td+=`<td class="${S.firstResult[i]?'ok':'ng'}">${S.firstResult[i]?'○':'×'}</td>`;
-    }
-    rows+=`<tr>${th}</tr><tr>${td}</tr>`;
-  }
-
-  let sendArea='';
-  if(S.mode==='record'){
-    if(!isPerfect){
-      sendArea=`<p class="send-note">※ 全問正解すると送信ボタンが表示されます</p>`;
-    } else if(S.sending){
-      sendArea=`<button class="send-btn" disabled>📤 送信中…</button>`;
-    } else if(S.submitted){
-      sendArea=`<div class="send-ok">✓ 学習記録を送信しました！<br><small style="font-weight:400">${esc(S.cls)}　${esc(S.name)}　${esc(sec().label)}　${S.score}/${n}点</small></div>`;
-    } else {
-      sendArea=`
-        ${S.sendError?`<div class="send-ng">✗ 送信に失敗しました。再度お試しください。</div>`:''}
-        <div class="comment-label">自由感想（任意・100字以内）</div>
-        <textarea class="comment-area" id="comment-area" maxlength="100"
-          placeholder="授業の感想、わからなかったこと等を自由に書いてください"
-          oninput="updateComment(this)">${esc(S.comment)}</textarea>
-        <div class="comment-count" id="comment-count">${S.comment.length} / 100</div>
-        <button class="send-btn" onclick="sendRecord()">📤 学習記録を送信する</button>`;
-    }
-  }
-
-  return `<div class="card">
-    <div class="result-score-row">
-      <div class="result-score-big">${S.score}<span> / ${n}</span></div>
-    </div>
-    <div class="result-msg">${msg}</div>
-    <table class="result-table">${rows}</table>
-    ${sendArea}
-    <button class="ghost-btn" onclick="doRetry()">もう一度挑戦</button>
-    <button class="ghost-btn" onclick="goMenu()">← セクション一覧へ</button>
-  </div>`;
-}
-
-/* ── アクション ── */
-function selectSec(i){
-  if(SECTIONS[i].disabled) return;
-  S.secIdx=i;
-  S.screen='mode-select';
-  render();
-}
-function goMenu(){ S.screen='menu'; render(); }
-function goModeSelect(){ S.screen='mode-select'; render(); }
-
-function chooseMode(m){
-  S.mode=m;
-  if(m==='study'){ initSection(); S.screen='quiz'; }
-  else            { S.screen='input'; }
-  render();
-}
-
-function handleInputStart(){
-  const cls=document.getElementById('inp-cls').value.trim();
-  const name=document.getElementById('inp-name').value.trim();
-  if(!cls||!name){ document.getElementById('inp-err').classList.add('show'); return; }
-  S.cls=cls; S.name=name;
-  initSection(); S.screen='quiz'; render();
-}
-
-function pick(i){
-  if(S.answered) return;
-  S.answered=true; S.selIdx=i;
-  const origIdx=S.displayQueue[S.qPos];
-  const q=sec().questions[origIdx];
-  const ok=S.shuffled[i].orig===q.answer;
-  if(S.firstResult[origIdx]===null){
-    S.firstResult[origIdx]=ok;
-    if(ok) S.score++;
-  }
-  if(!ok) S.displayQueue.push(origIdx);
-  render();
-}
-
-function nextQ(){
-  S.qPos++;
-  if(S.qPos>=S.displayQueue.length){ S.screen='result'; render(); }
-  else { initQ(); render(); }
-}
-
-function doRetry(){
-  initSection(); S.screen='quiz'; render();
-}
-
-function updateComment(el){
-  S.comment=el.value;
-  const cnt=document.getElementById('comment-count');
-  if(cnt) cnt.textContent=el.value.length+' / 100';
-}
-
-function sendRecord(){
-  const s=sec();
-  const n=s.questions.length;
-  S.sending=true; S.sendError=false; render();
-  const now=new Date();
-  const ts=`${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()} ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
-  const params={timestamp:ts,class:S.cls,name:S.name,section:s.label,score:String(S.score),total:String(n)};
-  S.firstResult.forEach((ok,i)=>{ params['q'+(i+1)]=ok?'○':'×'; });
-  params['comment']=S.comment||'';
-
-  const iframe=document.createElement('iframe');
-  iframe.name='_gas'; iframe.style.display='none';
-  document.body.appendChild(iframe);
-  const form=document.createElement('form');
-  form.method='GET'; form.action=GAS_URL; form.target='_gas';
-  Object.entries(params).forEach(([k,v])=>{
-    const inp=document.createElement('input');
-    inp.type='hidden'; inp.name=k; inp.value=v;
-    form.appendChild(inp);
+function doMath(el) {
+  const go = () => renderMathInElement(el, {
+    delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],
+    throwOnError:false
   });
-  document.body.appendChild(form);
-  form.submit();
-  setTimeout(()=>{
-    document.body.removeChild(form);
-    document.body.removeChild(iframe);
-    S.submitted=true; S.sending=false; S.comment=''; render();
-  },3000);
+  if (renderReady) go();
+  else pendingRender = go;
 }
 
-function switchMode(m){
-  if(m===S.mode && S.screen!=='menu') return;
-  S.mode=m;
-  if(m==='study'){
-    initSection(); S.screen=sec().disabled?'menu':'mode-select';
-  } else {
-    S.name=''; S.cls='';
-    S.screen=sec().disabled?'menu':'mode-select';
+function choiceToHtml(s) {
+  if (typeof katex !== 'undefined' && s.includes('$')) {
+    try {
+      return s.replace(/\$([^$]+)\$/g, (_,m) =>
+        katex.renderToString(m, {throwOnError:false, displayMode:false})
+      );
+    } catch(e) { return s; }
   }
+  return s.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function ctxHtml(q) {
+  return q.ctx ? `<div class="q-ctx">${q.ctx}</div>` : '';
+}
+
+function secNoteHtml(sec) {
+  return sec.note ? `<div class="sec-note">📌 ${sec.note}</div>` : '';
+}
+
+function secDiagramHtml(sec) {
+  return SEC_DIAGRAM[sec.id] ? `<div class="diagram-box">${SEC_DIAGRAM[sec.id]}</div>` : '';
+}
+
+function qDiagramHtml(q) {
+  return Q_DIAGRAM[q.id] ? `<div class="diagram-box">${Q_DIAGRAM[q.id]}</div>` : '';
+}
+
+// ============================================================
+// TABS
+// ============================================================
+function buildTabs() {
+  document.getElementById('tabs').innerHTML = SECTIONS.map(s => `
+    <div class="tab ${s.id===curSec?'active':''} ${!s.available?'disabled':''}"
+         onclick="${s.available?'setSec('+s.id+')':''}">
+      ${s.label}
+    </div>`).join('');
+}
+
+function setSec(id) {
+  curSec = id;
+  im.secId = null; ss.secId = null; sm.secId = null; sm.started = false;
+  buildTabs(); render();
+}
+
+// ============================================================
+// MODE
+// ============================================================
+function setMode(m) {
+  curMode = m;
+  ['modeIntro','modeStudy','modeSubmit'].forEach(id =>
+    document.getElementById(id).classList.remove('active'));
+  document.getElementById(m==='intro'?'modeIntro':m==='study'?'modeStudy':'modeSubmit')
+    .classList.add('active');
   render();
 }
 
-/* ── 起動 ── */
-(function wait(){
-  if(typeof katex!=='undefined'){ S.screen='menu'; render(); updateModeBar(); }
-  else setTimeout(wait,60);
-})();
+// ============================================================
+// RENDER DISPATCH
+// ============================================================
+function render() {
+  const sec = SECTIONS.find(s=>s.id===curSec);
+  const mLabel = curMode==='intro'?'🔰 初学モード':curMode==='study'?'📖 自習モード':'📤 送信モード';
+  document.getElementById('hdrSub').textContent = `${sec.subtitle}　｜　${mLabel}`;
+  if (!sec.available) { renderComing(sec); return; }
+  if (curMode==='intro')  renderIntro(sec);
+  else if (curMode==='study')  renderStudy(sec);
+  else renderSubmit(sec);
+}
+
+// ============================================================
+// COMING SOON
+// ============================================================
+function renderComing(sec) {
+  document.getElementById('content').innerHTML = `
+    <div class="coming-card">
+      <div class="coming-icon">🚧</div>
+      <div class="coming-title">準備中です</div>
+      <div class="coming-text">${sec.label} は現在作成中です。<br>しばらくお待ちください。</div>
+    </div>`;
+}
+
+// ============================================================
+// 初学モード
+// ============================================================
+function renderIntro(sec) {
+  if (im.secId !== sec.id) { im.secId=sec.id; im.idx=0; }
+  if (im.idx >= sec.questions.length) { renderIntroDone(sec); return; }
+
+  const q    = sec.questions[im.idx];
+  const tot  = sec.questions.length;
+  const pct  = Math.round(im.idx/tot*100);
+  const expl = EXPLANATIONS[q.id] || '';
+
+  const el = document.getElementById('content');
+  el.innerHTML = `
+    ${secNoteHtml(sec)}
+    <div class="prog-row">
+      <div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div>
+      <div class="prog-text">${im.idx+1} / ${tot}</div>
+    </div>
+    <div class="q-card">
+      <div class="q-num">問 ${im.idx+1}</div>
+      ${ctxHtml(q)}
+      <div class="q-text">${q.text}</div>
+    </div>
+    ${qDiagramHtml(q)}
+    <div class="intro-answer">
+      <div class="intro-answer-label">✅ 正解</div>
+      <div class="intro-answer-text">${choiceToHtml(q.choices[0])}</div>
+      <div class="intro-expl">💡 ${expl}</div>
+    </div>
+    ${secDiagramHtml(sec)}
+    <button class="next-btn" onclick="nextIntro()">
+      ${im.idx+1 < tot ? '次へ →' : '✅ 完了'}
+    </button>`;
+  doMath(el);
+}
+
+function nextIntro() {
+  im.idx++;
+  renderIntro(SECTIONS.find(s=>s.id===curSec));
+}
+
+function renderIntroDone(sec) {
+  document.getElementById('content').innerHTML = `
+    <div class="done-card">
+      <div class="done-icon">🎓</div>
+      <div class="done-title">${sec.label} の学習が終わりました</div>
+      <div class="done-sub">全 ${sec.questions.length} 問を確認しました。<br>自習モードで理解度を確かめましょう。</div>
+      <div class="done-actions">
+        <button class="next-btn gray" onclick="im.idx=0;renderIntro(SECTIONS.find(s=>s.id===curSec))">🔄 もう一度読み直す</button>
+        <button class="next-btn green" onclick="setMode('study')">📖 自習モードへ進む</button>
+      </div>
+    </div>`;
+}
+
+// ============================================================
+// 自習モード（キューベース・再出題あり）
+// ============================================================
+function setOrderMode(m) {
+  orderMode = m;
+  ss.secId  = null;
+  ss.chosen = [];
+  render();
+}
+
+function startStudy(sec) {
+  ss.secId     = sec.id;
+  ss.total     = sec.questions.length;
+  ss.queue     = orderMode === 'rand'
+                   ? shuffle([...sec.questions])
+                   : [...sec.questions];
+  ss.solved    = new Set();
+  ss.attempted = new Set();
+  ss.answered  = false;
+  ss.correct   = 0;
+  ss.wrong     = 0;
+  ss.chosen    = [];
+  renderStudy(sec);
+}
+
+function renderStudy(sec) {
+  if (ss.secId !== sec.id || (ss.queue.length === 0 && ss.solved.size === 0)) {
+    startStudy(sec); return;
+  }
+  if (ss.queue.length === 0) { renderResult(sec); return; }
+
+  const q       = ss.queue[0];
+  const isRetry = ss.attempted.has(q.id);
+  const pct     = Math.round((ss.solved.size / ss.total) * 100);
+
+  if (ss.chosen.length === 0) ss.chosen = shuffle(q.choices.map((_,i)=>i));
+
+  const el = document.getElementById('content');
+  el.innerHTML = `
+    ${secNoteHtml(sec)}
+    <div class="order-row">
+      <span class="order-label">出題順：</span>
+      <button class="order-btn ${orderMode==='seq'?'active':''}" onclick="setOrderMode('seq')">学習順</button>
+      <button class="order-btn ${orderMode==='rand'?'active':''}" onclick="setOrderMode('rand')">ランダム</button>
+    </div>
+    <div class="prog-row">
+      <div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div>
+      <div class="prog-text">${ss.solved.size} / ${ss.total} 問正解</div>
+    </div>
+    <div class="score-row" id="scoreRow">✅ ${ss.correct} &nbsp;❌ ${ss.wrong}</div>
+    ${isRetry ? '<div class="retry-badge">🔄 再チャレンジ問題</div>' : ''}
+    <div class="q-card">
+      <div class="q-num">問 ${q.id}</div>
+      ${ctxHtml(q)}
+      <div class="q-text">${q.text}</div>
+    </div>
+    ${qDiagramHtml(q)}
+    <div class="choices" id="clist">
+      ${ss.chosen.map((ci,pos)=>`
+        <button class="choice-btn" id="cb${pos}" onclick="pick(${pos})"
+                ${ss.answered?'disabled':''}>
+          ${choiceToHtml(q.choices[ci])}</button>`).join('')}
+    </div>
+    <div class="feedback" id="fb"></div>
+    <button class="next-btn" id="nb" onclick="nextQ()" style="display:none;">次の問題 →</button>
+    ${secDiagramHtml(sec)}`;
+  doMath(el);
+}
+
+function pick(pos) {
+  if (ss.answered) return;
+  ss.answered = true;
+  const q           = ss.queue[0];
+  const isCorrect   = ss.chosen[pos] === 0;
+  const firstTime   = !ss.attempted.has(q.id);
+  if (firstTime) {
+    ss.attempted.add(q.id);
+    isCorrect ? ss.correct++ : ss.wrong++;
+  }
+  if (isCorrect) ss.solved.add(q.id);
+  ss.lastCorrect = isCorrect;
+
+  ss.chosen.forEach((ci,p) => {
+    const btn = document.getElementById('cb'+p);
+    if (!btn) return;
+    btn.disabled = true;
+    if (ci===0)            btn.classList.add('correct');
+    else if (p===pos&&!isCorrect) btn.classList.add('wrong');
+  });
+  const fb   = document.getElementById('fb');
+  const expl = EXPLANATIONS[q.id] || '';
+  fb.className = 'feedback ' + (isCorrect?'ok':'ng');
+  fb.innerHTML = isCorrect
+    ? `✅ 正解！${expl?`<br><span class="fb-expl">💡 ${expl}</span>`:''}`
+    : `❌ 不正解。正解は「${choiceToHtml(q.choices[0])}」です。もう一度あとで出題されます。${expl?`<br><span class="fb-expl">💡 ${expl}</span>`:''}`;
+  doMath(fb);
+  document.getElementById('scoreRow').innerHTML = `✅ ${ss.correct} &nbsp;❌ ${ss.wrong}`;
+  const nb = document.getElementById('nb');
+  nb.textContent = (isCorrect && ss.queue.length-1===0) ? '結果を見る →' : '次の問題 →';
+  nb.style.display = 'block';
+}
+
+function nextQ() {
+  const q = ss.queue.shift();
+  if (!ss.solved.has(q.id)) ss.queue.push(q);
+  ss.answered = false; ss.chosen = [];
+  renderStudy(SECTIONS.find(s=>s.id===curSec));
+}
+
+function renderResult(sec) {
+  const pct   = Math.round((ss.correct/ss.total)*100);
+  const emoji = pct>=90?'🎉':pct>=70?'👍':pct>=50?'🤔':'😢';
+  document.getElementById('content').innerHTML = `
+    <div class="result-card">
+      <div class="result-emoji">${emoji}</div>
+      <div class="result-score">${ss.correct}</div>
+      <div class="result-total">/ ${ss.total} 問正解（1回目の解答時点）</div>
+      <div class="result-pct">${pct}%</div>
+      <div class="result-actions">
+        <button class="next-btn" onclick="startStudy(SECTIONS.find(s=>s.id===${curSec}))">🔄 もう一度やり直す</button>
+        <button class="next-btn green" onclick="setMode('submit')">📤 送信モードへ</button>
+      </div>
+    </div>`;
+}
+
+// ============================================================
+// 送信モード（キューベース・再出題あり）
+// ============================================================
+function renderSubmit(sec) {
+  if (sm.secId !== sec.id || !sm.started) { renderSubmitIntro(sec); return; }
+  if (sm.queue.length === 0)               { renderSubmitFinal(sec); return; }
+  renderSubmitQuestion(sec);
+}
+
+function renderSubmitIntro(sec) {
+  document.getElementById('content').innerHTML = `
+    <div class="name-card">
+      <label class="name-label" for="snum">組番号を入力してください</label>
+      <input type="text" class="name-input" id="snum"
+             placeholder="例：C01"
+             value="${sm.secId===sec.id ? sm.num : ''}">
+    </div>
+    <div class="name-card">
+      <label class="name-label" for="sname">氏名を入力してください</label>
+      <input type="text" class="name-input" id="sname"
+             placeholder="例：湘南 太郎"
+             value="${sm.secId===sec.id ? sm.name : ''}">
+    </div>
+    <button class="next-btn" onclick="startSubmitQuiz(${sec.id})">
+      ✏️ 回答を開始する（全 ${sec.questions.length} 問）
+    </button>`;
+}
+
+function startSubmitQuiz(secId) {
+  const num  = document.getElementById('snum').value.trim();
+  const name = document.getElementById('sname').value.trim();
+  if (!num)  { alert('組番号を入力してください'); return; }
+  if (!name) { alert('氏名を入力してください');   return; }
+  const sec = SECTIONS.find(s=>s.id===secId);
+  sm.secId              = secId;
+  sm.num                = num;
+  sm.name               = name;
+  sm.started            = true;
+  sm.startedAt          = Date.now();   // 所要時間の計測用
+  sm.total              = sec.questions.length;
+  sm.queue              = [...sec.questions];
+  sm.solved             = new Set();
+  sm.attempted          = new Set();
+  sm.firstAttemptCorrect= {};
+  sm.answered           = false;
+  sm.chosen             = [];
+  sm.lastPickedCi       = null;
+  renderSubmit(sec);
+}
+
+function renderSubmitQuestion(sec) {
+  const q       = sm.queue[0];
+  const isRetry = sm.attempted.has(q.id);
+  const pct     = Math.round((sm.solved.size / sm.total) * 100);
+
+  if (sm.chosen.length === 0) sm.chosen = shuffle(q.choices.map((_,i)=>i));
+  const selCi    = sm.lastPickedCi;
+  const willEnd  = sm.answered && sm.lastCorrect && sm.queue.length-1===0;
+  const expl     = EXPLANATIONS[q.id] || '';
+
+  const el = document.getElementById('content');
+  el.innerHTML = `
+    <div class="name-card" style="display:flex;align-items:center;gap:8px;padding:10px 16px;">
+      <span style="font-size:12px;color:#64748b;">📤 送信モード</span>
+      <strong style="font-size:13px;color:#2563eb;">${sm.num}　${sm.name}</strong>
+    </div>
+    ${secNoteHtml(sec)}
+    <div class="prog-row">
+      <div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div>
+      <div class="prog-text">${sm.solved.size} / ${sm.total} 問正解</div>
+    </div>
+    ${isRetry ? '<div class="retry-badge">🔄 再チャレンジ問題</div>' : ''}
+    <div class="q-card">
+      <div class="q-num">問 ${q.id}</div>
+      ${ctxHtml(q)}
+      <div class="q-text">${q.text}</div>
+    </div>
+    ${qDiagramHtml(q)}
+    <div class="choices">
+      ${sm.chosen.map((ci,pos)=>{
+        let cls='';
+        if (sm.answered) {
+          if (ci===0) cls='correct';
+          else if (ci===selCi&&ci!==0) cls='wrong';
+        }
+        return `<button class="choice-btn ${cls}" onclick="pickSM(${pos})"
+                        ${sm.answered?'disabled':''}>
+                  ${choiceToHtml(q.choices[ci])}</button>`;
+      }).join('')}
+    </div>
+    ${sm.answered ? `
+      <div class="sm-explanation">
+        <span class="sm-expl-icon">💡</span><span>${expl}</span>
+      </div>
+      <button class="next-btn" onclick="nextSubmitQ()">
+        ${willEnd ? '✅ 送信画面へ →' : '次の問題 →'}
+      </button>` : ''}
+    ${secDiagramHtml(sec)}`;
+  doMath(el);
+}
+
+function pickSM(pos) {
+  if (sm.answered) return;
+  sm.answered = true;
+  const q          = sm.queue[0];
+  const isCorrect  = sm.chosen[pos] === 0;
+  const firstTime  = !sm.attempted.has(q.id);
+  if (firstTime) {
+    sm.attempted.add(q.id);
+    sm.firstAttemptCorrect[q.id] = isCorrect;
+  }
+  if (isCorrect) sm.solved.add(q.id);
+  sm.lastCorrect   = isCorrect;
+  sm.lastPickedCi  = sm.chosen[pos];
+  renderSubmitQuestion(SECTIONS.find(s=>s.id===sm.secId));
+}
+
+function nextSubmitQ() {
+  const q = sm.queue.shift();
+  if (!sm.solved.has(q.id)) sm.queue.push(q);
+  sm.answered    = false;
+  sm.chosen      = [];
+  sm.lastPickedCi= null;
+  renderSubmit(SECTIONS.find(s=>s.id===sm.secId));
+}
+
+function renderSubmitFinal(sec) {
+  const correct = sec.questions.filter(q=>sm.firstAttemptCorrect[q.id]).length;
+  const total   = sec.questions.length;
+  document.getElementById('content').innerHTML = `
+    <div class="done-card">
+      <div class="done-icon">📝</div>
+      <div class="done-title">全 ${total} 問の回答が完了しました</div>
+      <div style="font-size:15px;color:#2563eb;font-weight:600;margin-bottom:4px;">
+        ${sm.num}　${sm.name} さん
+      </div>
+      <div style="font-size:17px;font-weight:700;margin-bottom:20px;">
+        得点（1回目正解）：<span style="color:#2563eb;font-size:26px;">${correct}</span> / ${total}
+      </div>
+      <button class="submit-btn" id="sbtn" onclick="doSubmit(${sec.id})">📤 記録を送信する</button>
+      <div id="sresult"></div>
+    </div>`;
+}
+
+// ============================================================
+//  記録送信（学習記録ハブ  スキーマ v1）
+// ============================================================
+// ハブGASのデプロイURL
+const HUB_URL = 'https://script.google.com/macros/s/AKfycbwnV8z1aoFsLF0NEEgFXZEVktKKNVqm8Fnvrm4Z772M1df-VZKJRAljAZBHgRkInIVX/exec';
+
+// 単元マスタ.xlsx「アプリ設定」シートの gravitation の行から転記
+const APP_ID  = 'gravitation';
+const UNIT_ID = 'MEC07';
+// ★配列の並びはタブ（①〜④）の並びと一致させること
+const SEC_IDS = ['MEC07-S1', 'MEC07-S2', 'MEC07-S3', 'MEC07-S4'];
+
+// 移行期のみ true。旧スプレッドシートにも同じ内容を送る。
+// ハブ側で記録できていることを確認したら false にする。
+const SEND_LEGACY = true;
+
+let _sub = null;   // 直前の送信内容（結果表示用）
+
+function doSubmit(secId) {
+  const sec     = SECTIONS.find(s=>s.id===secId);
+  const qids    = sec.questions.map(q=>q.id);
+  const correct = qids.filter(id=>sm.firstAttemptCorrect[id]).length;
+  const elapsed = sm.startedAt ? Math.round((Date.now()-sm.startedAt)/1000) : 0;
+
+  _sub = { num:sm.num, name:sm.name, correct, total:qids.length };
+
+  if (!HUB_URL && !(SEND_LEGACY && SUBMIT_URL)) {
+    document.getElementById('sresult').innerHTML = `
+      <div class="sub-result warn">⚠️ 送信先URLが未設定です。<br>
+        <strong>${sm.num}　${sm.name}</strong> さんの得点：<strong>${correct} / ${_sub.total}</strong>（1回目正解）
+      </div>`;
+    return;
+  }
+
+  const btn = document.getElementById('sbtn');
+  if (btn) { btn.disabled = true; btn.textContent = '📤 送信中…'; }
+
+  sendRecord(sec, qids, correct, elapsed).then(ok => showSubmitResult(ok, btn));
+}
+
+/* ── ハブ（＋移行期は旧GAS）へ送信 ── */
+async function sendRecord(sec, qids, correct, elapsed) {
+  const marks = qids.map(id => (sm.firstAttemptCorrect[id] ? '1' : '0')).join('');
+  let ok = null;
+
+  if (HUB_URL) {
+    const secId = SEC_IDS[sec.id - 1];
+    if (!secId) {
+      console.error('SEC_IDS に ' + sec.label + ' の定義がありません');
+    } else {
+      const p = new URLSearchParams();
+      p.set('v',       '1');
+      p.set('app',     APP_ID);
+      p.set('unit',    UNIT_ID);
+      p.set('sec',     secId);           // ★恒久ID。単元マスタとの結合キー
+      p.set('section', sec.subtitle);    // 保険（マスタ側の名前が優先される）
+      p.set('cls',     sm.num);          // 組番号 → 名簿で生徒IDに解決される
+      p.set('name',    sm.name);
+      p.set('mode',    '送信');
+      p.set('qids',    qids.join(','));
+      p.set('marks',   marks);           // 例 "1011…"（○×より遥かに短い）
+      p.set('elapsed', String(elapsed));
+      p.set('comment', '');
+      ok = await beacon(HUB_URL + '?' + p.toString());
+    }
+  }
+
+  if (SEND_LEGACY && SUBMIT_URL) {
+    const q = new URLSearchParams({
+      num      : sm.num,
+      name     : sm.name,
+      section  : sec.subtitle,
+      score    : String(correct),
+      total    : String(qids.length),
+      timestamp: new Date().toLocaleString('ja-JP')
+    });
+    qids.forEach(id => q.append('q'+id, sm.firstAttemptCorrect[id] ? '○' : '×'));
+    const ok2 = await beacon(SUBMIT_URL + '?' + q.toString());
+    if (ok === null) ok = ok2;
+  }
+
+  return ok === true;
+}
+
+/* ── 画像ビーコン方式（CSP・CORSの影響を受けにくい）／最大3回試行 ── */
+function beacon(url) {
+  const MAX = 3;
+  return (async () => {
+    for (let i = 0; i < MAX; i++) {
+      const btn = document.getElementById('sbtn');
+      if (btn && i > 0) btn.textContent = `🔄 再送信中…(${i+1}/${MAX})`;
+      const reached = await new Promise(resolve => {
+        const img   = new Image();
+        const timer = setTimeout(() => resolve(false), 6000);
+        img.onload  = () => { clearTimeout(timer); resolve(true); };
+        img.onerror = () => { clearTimeout(timer); resolve(true); };  // 到達はしている
+        img.src = url;
+      });
+      if (reached) return true;
+      await new Promise(r => setTimeout(r, 1500));
+    }
+    return false;
+  })();
+}
+
+/* ── 結果表示 ── */
+function showSubmitResult(ok, btn) {
+  const {num,name,correct,total} = _sub;
+  const el = document.getElementById('sresult');
+  if (!el) return;
+
+  if (ok) {
+    el.innerHTML = `
+      <div class="sub-result ok">✅ 送信完了！お疲れ様でした。<br>
+        <strong>${num}　${name}</strong> さんの得点（1回目正解）：<strong>${correct} / ${total}</strong>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:12px;">
+        <button class="next-btn" onclick="setMode('study')">📖 自習モードで学習する</button>
+        <button class="next-btn" style="background:#059669;"
+                onclick="sm.started=false;setMode('submit')">📤 もう一度送信モードで解く</button>
+      </div>`;
+  } else {
+    el.innerHTML = `
+      <div class="sub-result warn">❌ 送信に失敗しました。ネットワークを確認してください。<br>
+        <strong>${num}　${name}</strong> さんの得点：<strong>${correct} / ${total}</strong>
+      </div>`;
+    if (btn) { btn.disabled=false; btn.textContent='📤 もう一度送信する'; }
+  }
+}
+
+// ============================================================
+// INIT
+// ============================================================
+buildTabs();
+setMode('study');   // 他アプリと同じく自習モードで開始
 </script>
 </body>
 </html>
